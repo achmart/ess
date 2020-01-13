@@ -1,0 +1,1356 @@
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"main.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.global	testkey
+  17              		.data
+  18              		.align	2
+  21              	testkey:
+  22 0000 B5       		.byte	-75
+  23 0001 AA       		.byte	-86
+  24 0002 D9       		.byte	-39
+  25 0003 9B       		.byte	-101
+  26 0004 99       		.byte	-103
+  27 0005 A5       		.byte	-91
+  28 0006 32       		.byte	50
+  29 0007 BE       		.byte	-66
+  30 0008 EC       		.byte	-20
+  31 0009 4D       		.byte	77
+  32 000a CE       		.byte	-50
+  33 000b 34       		.byte	52
+  34 000c 06       		.byte	6
+  35 000d 76       		.byte	118
+  36 000e 8C       		.byte	-116
+  37 000f 2C       		.byte	44
+  38 0010 1A       		.byte	26
+  39 0011 2F       		.byte	47
+  40 0012 29       		.byte	41
+  41 0013 0E       		.byte	14
+  42 0014 CE       		.byte	-50
+  43 0015 86       		.byte	-122
+  44 0016 1B       		.byte	27
+  45 0017 58       		.byte	88
+  46 0018 99       		.byte	-103
+  47 0019 B0       		.byte	-80
+  48 001a 80       		.byte	-128
+  49 001b D1       		.byte	-47
+  50 001c 25       		.byte	37
+  51 001d B5       		.byte	-75
+  52 001e 6F       		.byte	111
+  53 001f 56       		.byte	86
+  54              		.global	testkey_len
+  55              		.align	2
+  58              	testkey_len:
+  59 0020 20000000 		.word	32
+  60              		.global	clock_config
+  61              		.section	.rodata
+  62              		.align	2
+  65              	clock_config:
+  66 0000 50       		.byte	80
+  67 0001 02       		.byte	2
+  68 0002 04       		.byte	4
+  69 0003 01       		.byte	1
+  70 0004 0000     		.short	0
+  71 0006 01       		.byte	1
+  72 0007 00       		.space	1
+  73 0008 00       		.byte	0
+  74 0009 000000   		.space	3
+  75 000c 00000100 		.word	65536
+  76 0010 01       		.byte	1
+  77 0011 01       		.byte	1
+  78 0012 01       		.byte	1
+  79 0013 01       		.byte	1
+  80              		.section	.text.SystemCoreClockSetup,"ax",%progbits
+  81              		.align	1
+  82              		.global	SystemCoreClockSetup
+  83              		.syntax unified
+  84              		.thumb
+  85              		.thumb_func
+  86              		.fpu fpv4-sp-d16
+  88              	SystemCoreClockSetup:
+  89              	.LFB193:
+  90              		.file 1 "main.c"
+   1:main.c        **** /**
+   2:main.c        ****  * g_chipid = {0xc1, 0x0, 0x4, 0xd, 0x4, 0x20, 0x4, 0x59, 0x82, 0x6, 0x0, 0x10, 0xa, 0x0, 0x0, 0x0}
+   3:main.c        ****  * &g_chipid = 0x200ffc4
+   4:main.c        ****  * 
+   5:main.c        ****  * 
+   6:main.c        ****  * 
+   7:main.c        ****  * 
+   8:main.c        ****  * */
+   9:main.c        **** #include "VirtualSerial.h"
+  10:main.c        **** #include "base64.h"
+  11:main.c        **** #include <sodium.h>
+  12:main.c        **** #include "randombytes_dilbert.h"
+  13:main.c        **** #include "testkey.h"
+  14:main.c        **** 
+  15:main.c        **** #define MAX_MESSAGE_SIZE 43800
+  16:main.c        **** #define HEADER_SIZE 38
+  17:main.c        **** 
+  18:main.c        **** /* Clock configuration */
+  19:main.c        **** XMC_SCU_CLOCK_CONFIG_t clock_config =
+  20:main.c        **** {
+  21:main.c        ****     .syspll_config.p_div = 2,
+  22:main.c        ****     .syspll_config.n_div = 80,
+  23:main.c        ****     .syspll_config.k_div = 4,
+  24:main.c        ****     .syspll_config.mode = XMC_SCU_CLOCK_SYSPLL_MODE_NORMAL,
+  25:main.c        ****     .syspll_config.clksrc = XMC_SCU_CLOCK_SYSPLLCLKSRC_OSCHP,
+  26:main.c        ****     .enable_oschp = true,
+  27:main.c        ****     .calibration_mode = XMC_SCU_CLOCK_FOFI_CALIBRATION_MODE_FACTORY,
+  28:main.c        ****     .fsys_clksrc = XMC_SCU_CLOCK_SYSCLKSRC_PLL,
+  29:main.c        ****     .fsys_clkdiv = 1,
+  30:main.c        ****     .fcpu_clkdiv = 1,
+  31:main.c        ****     .fccu_clkdiv = 1,
+  32:main.c        ****     .fperipheral_clkdiv = 1
+  33:main.c        **** };
+  34:main.c        **** 
+  35:main.c        **** void SystemCoreClockSetup(void)
+  36:main.c        **** {
+  91              		.loc 1 36 0
+  92              		.cfi_startproc
+  93              		@ args = 0, pretend = 0, frame = 0
+  94              		@ frame_needed = 1, uses_anonymous_args = 0
+  95 0000 80B5     		push	{r7, lr}
+  96              	.LCFI0:
+  97              		.cfi_def_cfa_offset 8
+  98              		.cfi_offset 7, -8
+  99              		.cfi_offset 14, -4
+ 100 0002 00AF     		add	r7, sp, #0
+ 101              	.LCFI1:
+ 102              		.cfi_def_cfa_register 7
+  37:main.c        ****     /* Setup settings for USB clock */
+  38:main.c        ****     XMC_SCU_CLOCK_Init(&clock_config);
+ 103              		.loc 1 38 0
+ 104 0004 0A48     		ldr	r0, .L2
+ 105 0006 FFF7FEFF 		bl	XMC_SCU_CLOCK_Init
+  39:main.c        **** 
+  40:main.c        ****     XMC_SCU_CLOCK_EnableUsbPll();
+ 106              		.loc 1 40 0
+ 107 000a FFF7FEFF 		bl	XMC_SCU_CLOCK_EnableUsbPll
+  41:main.c        ****     XMC_SCU_CLOCK_StartUsbPll(2, 64);
+ 108              		.loc 1 41 0
+ 109 000e 4021     		movs	r1, #64
+ 110 0010 0220     		movs	r0, #2
+ 111 0012 FFF7FEFF 		bl	XMC_SCU_CLOCK_StartUsbPll
+  42:main.c        ****     XMC_SCU_CLOCK_SetUsbClockDivider(4);
+ 112              		.loc 1 42 0
+ 113 0016 0420     		movs	r0, #4
+ 114 0018 FFF7FEFF 		bl	XMC_SCU_CLOCK_SetUsbClockDivider
+  43:main.c        ****     XMC_SCU_CLOCK_SetUsbClockSource(XMC_SCU_CLOCK_USBCLKSRC_USBPLL);
+ 115              		.loc 1 43 0
+ 116 001c 0020     		movs	r0, #0
+ 117 001e FFF7FEFF 		bl	XMC_SCU_CLOCK_SetUsbClockSource
+  44:main.c        ****     XMC_SCU_CLOCK_EnableClock(XMC_SCU_CLOCK_USB);
+ 118              		.loc 1 44 0
+ 119 0022 0120     		movs	r0, #1
+ 120 0024 FFF7FEFF 		bl	XMC_SCU_CLOCK_EnableClock
+  45:main.c        **** 
+  46:main.c        ****     SystemCoreClockUpdate();
+ 121              		.loc 1 46 0
+ 122 0028 FFF7FEFF 		bl	SystemCoreClockUpdate
+  47:main.c        **** }
+ 123              		.loc 1 47 0
+ 124 002c 00BF     		nop
+ 125 002e 80BD     		pop	{r7, pc}
+ 126              	.L3:
+ 127              		.align	2
+ 128              	.L2:
+ 129 0030 00000000 		.word	clock_config
+ 130              		.cfi_endproc
+ 131              	.LFE193:
+ 133              		.section	.text.main,"ax",%progbits
+ 134              		.align	1
+ 135              		.global	main
+ 136              		.syntax unified
+ 137              		.thumb
+ 138              		.thumb_func
+ 139              		.fpu fpv4-sp-d16
+ 141              	main:
+ 142              	.LFB194:
+  48:main.c        **** 
+  49:main.c        **** int main(void){
+ 143              		.loc 1 49 0
+ 144              		.cfi_startproc
+ 145              		@ args = 0, pretend = 0, frame = 64
+ 146              		@ frame_needed = 1, uses_anonymous_args = 0
+ 147 0000 90B5     		push	{r4, r7, lr}
+ 148              	.LCFI2:
+ 149              		.cfi_def_cfa_offset 12
+ 150              		.cfi_offset 4, -12
+ 151              		.cfi_offset 7, -8
+ 152              		.cfi_offset 14, -4
+ 153 0002 93B0     		sub	sp, sp, #76
+ 154              	.LCFI3:
+ 155              		.cfi_def_cfa_offset 88
+ 156 0004 02AF     		add	r7, sp, #8
+ 157              	.LCFI4:
+ 158              		.cfi_def_cfa 7, 80
+  50:main.c        ****     
+  51:main.c        ****     uint16_t total_received_bytes = 0;
+ 159              		.loc 1 51 0
+ 160 0006 0023     		movs	r3, #0
+ 161 0008 FB87     		strh	r3, [r7, #62]	@ movhi
+  52:main.c        ****     uint16_t received_bytes = 0;
+ 162              		.loc 1 52 0
+ 163 000a 0023     		movs	r3, #0
+ 164 000c 3B86     		strh	r3, [r7, #48]	@ movhi
+  53:main.c        ****     uint16_t length_decoded_text = 0;
+ 165              		.loc 1 53 0
+ 166 000e 0023     		movs	r3, #0
+ 167 0010 FB85     		strh	r3, [r7, #46]	@ movhi
+  54:main.c        ****     uint16_t length_encoded_text = 0;
+ 168              		.loc 1 54 0
+ 169 0012 0023     		movs	r3, #0
+ 170 0014 BB85     		strh	r3, [r7, #44]	@ movhi
+  55:main.c        ****     unsigned char received_char = 0;
+ 171              		.loc 1 55 0
+ 172 0016 0023     		movs	r3, #0
+ 173 0018 87F82B30 		strb	r3, [r7, #43]
+  56:main.c        ****     // Max Size of received Data:
+  57:main.c        ****     // 3 Control + 36 Header + 43692 Text = 43731
+  58:main.c        ****     char *buffer = (char *)calloc(MAX_MESSAGE_SIZE + crypto_secretbox_MACBYTES, sizeof(char));
+ 174              		.loc 1 58 0
+ 175 001c 0121     		movs	r1, #1
+ 176 001e 4AF62830 		movw	r0, #43816
+ 177 0022 FFF7FEFF 		bl	calloc
+ 178 0026 0346     		mov	r3, r0
+ 179 0028 7B62     		str	r3, [r7, #36]
+  59:main.c        ****     enum myread_state {IDLE, READ_START, READ_HEADER, READ_TEXT};
+  60:main.c        ****     enum myread_state read_state = READ_START;
+ 180              		.loc 1 60 0
+ 181 002a 0123     		movs	r3, #1
+ 182 002c 87F83D30 		strb	r3, [r7, #61]
+  61:main.c        **** 
+  62:main.c        ****     USB_Init();
+ 183              		.loc 1 62 0
+ 184 0030 FFF7FEFF 		bl	USB_Init
+  63:main.c        ****     // Replace RNG
+  64:main.c        ****     randombytes_set_implementation(&randombytes_dilbert_implementation);
+ 185              		.loc 1 64 0
+ 186 0034 9C48     		ldr	r0, .L46
+ 187 0036 FFF7FEFF 		bl	randombytes_set_implementation
+  65:main.c        ****     if(sodium_init() == -1)
+ 188              		.loc 1 65 0
+ 189 003a FFF7FEFF 		bl	sodium_init
+ 190 003e 0346     		mov	r3, r0
+ 191 0040 B3F1FF3F 		cmp	r3, #-1
+ 192 0044 02D1     		bne	.L5
+  66:main.c        ****         return -1;
+ 193              		.loc 1 66 0
+ 194 0046 4FF0FF33 		mov	r3, #-1
+ 195 004a 46E2     		b	.L44
+ 196              	.L5:
+  67:main.c        **** 
+  68:main.c        ****     while (1) {
+  69:main.c        ****         
+  70:main.c        ****         // Read Bytes from Serial as long as possible, normally you get only one
+  71:main.c        ****         received_bytes = CDC_Device_BytesReceived(&VirtualSerial_CDC_Interface);
+ 197              		.loc 1 71 0
+ 198 004c 9748     		ldr	r0, .L46+4
+ 199 004e FFF7FEFF 		bl	CDC_Device_BytesReceived
+ 200 0052 0346     		mov	r3, r0
+ 201 0054 3B86     		strh	r3, [r7, #48]	@ movhi
+ 202              	.LBB2:
+  72:main.c        ****         for (uint16_t i = 0; i < received_bytes; i++) {
+ 203              		.loc 1 72 0
+ 204 0056 0023     		movs	r3, #0
+ 205 0058 7B87     		strh	r3, [r7, #58]	@ movhi
+ 206 005a D5E0     		b	.L7
+ 207              	.L31:
+  73:main.c        ****             received_char = CDC_Device_ReceiveByte(&VirtualSerial_CDC_Interface);
+ 208              		.loc 1 73 0
+ 209 005c 9348     		ldr	r0, .L46+4
+ 210 005e FFF7FEFF 		bl	CDC_Device_ReceiveByte
+ 211 0062 0346     		mov	r3, r0
+ 212 0064 87F82B30 		strb	r3, [r7, #43]
+  74:main.c        ****             switch (read_state) {
+ 213              		.loc 1 74 0
+ 214 0068 97F83D30 		ldrb	r3, [r7, #61]	@ zero_extendqisi2
+ 215 006c 032B     		cmp	r3, #3
+ 216 006e 00F2C880 		bhi	.L8
+ 217 0072 01A2     		adr	r2, .L10
+ 218 0074 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 219              		.p2align 2
+ 220              	.L10:
+ 221 0078 03020000 		.word	.L8+1
+ 222 007c 89000000 		.word	.L11+1
+ 223 0080 AD000000 		.word	.L12+1
+ 224 0084 57010000 		.word	.L13+1
+ 225              		.p2align 1
+ 226              	.L11:
+  75:main.c        ****                 // Read until first 0x01 arrives
+  76:main.c        ****                 case READ_START:
+  77:main.c        ****                     if(received_char == 0x01) {
+ 227              		.loc 1 77 0
+ 228 0088 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 229 008c 012B     		cmp	r3, #1
+ 230 008e 40F0B780 		bne	.L45
+  78:main.c        ****                         buffer[total_received_bytes] = received_char;
+ 231              		.loc 1 78 0
+ 232 0092 FB8F     		ldrh	r3, [r7, #62]
+ 233 0094 7A6A     		ldr	r2, [r7, #36]
+ 234 0096 1344     		add	r3, r3, r2
+ 235 0098 97F82B20 		ldrb	r2, [r7, #43]
+ 236 009c 1A70     		strb	r2, [r3]
+  79:main.c        ****                         total_received_bytes++;
+ 237              		.loc 1 79 0
+ 238 009e FB8F     		ldrh	r3, [r7, #62]
+ 239 00a0 0133     		adds	r3, r3, #1
+ 240 00a2 FB87     		strh	r3, [r7, #62]	@ movhi
+  80:main.c        ****                         read_state = READ_HEADER;
+ 241              		.loc 1 80 0
+ 242 00a4 0223     		movs	r3, #2
+ 243 00a6 87F83D30 		strb	r3, [r7, #61]
+  81:main.c        ****                     }
+  82:main.c        ****                     break;
+ 244              		.loc 1 82 0
+ 245 00aa A9E0     		b	.L45
+ 246              	.L12:
+  83:main.c        ****                 // Read header until 0x02 arrives
+  84:main.c        ****                 case READ_HEADER:
+  85:main.c        ****                     if((received_char >= 'A' && received_char <= 'Z') || (received_char >= 'a' && r
+ 247              		.loc 1 85 0
+ 248 00ac 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 249 00b0 402B     		cmp	r3, #64
+ 250 00b2 03D9     		bls	.L15
+ 251              		.loc 1 85 0 is_stmt 0 discriminator 1
+ 252 00b4 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 253 00b8 5A2B     		cmp	r3, #90
+ 254 00ba 1BD9     		bls	.L16
+ 255              	.L15:
+ 256              		.loc 1 85 0 discriminator 3
+ 257 00bc 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 258 00c0 602B     		cmp	r3, #96
+ 259 00c2 03D9     		bls	.L17
+ 260              		.loc 1 85 0 discriminator 4
+ 261 00c4 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 262 00c8 7A2B     		cmp	r3, #122
+ 263 00ca 13D9     		bls	.L16
+ 264              	.L17:
+  86:main.c        ****                         || (received_char >= '0' && received_char <= '9') || received_char == '-' |
+ 265              		.loc 1 86 0 is_stmt 1
+ 266 00cc 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 267 00d0 2F2B     		cmp	r3, #47
+ 268 00d2 03D9     		bls	.L18
+ 269              		.loc 1 86 0 is_stmt 0 discriminator 1
+ 270 00d4 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 271 00d8 392B     		cmp	r3, #57
+ 272 00da 0BD9     		bls	.L16
+ 273              	.L18:
+ 274              		.loc 1 86 0 discriminator 3
+ 275 00dc 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 276 00e0 2D2B     		cmp	r3, #45
+ 277 00e2 07D0     		beq	.L16
+ 278              		.loc 1 86 0 discriminator 4
+ 279 00e4 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 280 00e8 5F2B     		cmp	r3, #95
+ 281 00ea 03D0     		beq	.L16
+  87:main.c        ****                         || received_char == '=') {
+ 282              		.loc 1 87 0 is_stmt 1
+ 283 00ec 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 284 00f0 3D2B     		cmp	r3, #61
+ 285 00f2 09D1     		bne	.L19
+ 286              	.L16:
+  88:main.c        ****                             buffer[total_received_bytes] = received_char;
+ 287              		.loc 1 88 0
+ 288 00f4 FB8F     		ldrh	r3, [r7, #62]
+ 289 00f6 7A6A     		ldr	r2, [r7, #36]
+ 290 00f8 1344     		add	r3, r3, r2
+ 291 00fa 97F82B20 		ldrb	r2, [r7, #43]
+ 292 00fe 1A70     		strb	r2, [r3]
+  89:main.c        ****                             total_received_bytes++;
+ 293              		.loc 1 89 0
+ 294 0100 FB8F     		ldrh	r3, [r7, #62]
+ 295 0102 0133     		adds	r3, r3, #1
+ 296 0104 FB87     		strh	r3, [r7, #62]	@ movhi
+  90:main.c        ****                         } else if(received_char == 0x02) {
+  91:main.c        ****                             buffer[total_received_bytes] = received_char;
+  92:main.c        ****                             total_received_bytes++;
+  93:main.c        ****                             read_state = READ_TEXT;
+  94:main.c        ****                         } else if(received_char == 0x01) {
+  95:main.c        ****                             total_received_bytes = 0;
+  96:main.c        ****                             buffer[total_received_bytes] = received_char;
+  97:main.c        ****                             total_received_bytes++;
+  98:main.c        ****                         } else {
+  99:main.c        ****                             // TODO only until 36 bytes arrived
+ 100:main.c        ****                             read_state = READ_START;
+ 101:main.c        ****                             total_received_bytes = 0;
+ 102:main.c        ****                         }
+ 103:main.c        ****                         break;
+ 297              		.loc 1 103 0
+ 298 0106 7CE0     		b	.L8
+ 299              	.L19:
+  90:main.c        ****                         } else if(received_char == 0x02) {
+ 300              		.loc 1 90 0
+ 301 0108 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 302 010c 022B     		cmp	r3, #2
+ 303 010e 0CD1     		bne	.L21
+  91:main.c        ****                             total_received_bytes++;
+ 304              		.loc 1 91 0
+ 305 0110 FB8F     		ldrh	r3, [r7, #62]
+ 306 0112 7A6A     		ldr	r2, [r7, #36]
+ 307 0114 1344     		add	r3, r3, r2
+ 308 0116 97F82B20 		ldrb	r2, [r7, #43]
+ 309 011a 1A70     		strb	r2, [r3]
+  92:main.c        ****                             read_state = READ_TEXT;
+ 310              		.loc 1 92 0
+ 311 011c FB8F     		ldrh	r3, [r7, #62]
+ 312 011e 0133     		adds	r3, r3, #1
+ 313 0120 FB87     		strh	r3, [r7, #62]	@ movhi
+  93:main.c        ****                         } else if(received_char == 0x01) {
+ 314              		.loc 1 93 0
+ 315 0122 0323     		movs	r3, #3
+ 316 0124 87F83D30 		strb	r3, [r7, #61]
+ 317              		.loc 1 103 0
+ 318 0128 6BE0     		b	.L8
+ 319              	.L21:
+  94:main.c        ****                             total_received_bytes = 0;
+ 320              		.loc 1 94 0
+ 321 012a 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 322 012e 012B     		cmp	r3, #1
+ 323 0130 0BD1     		bne	.L22
+  95:main.c        ****                             buffer[total_received_bytes] = received_char;
+ 324              		.loc 1 95 0
+ 325 0132 0023     		movs	r3, #0
+ 326 0134 FB87     		strh	r3, [r7, #62]	@ movhi
+  96:main.c        ****                             total_received_bytes++;
+ 327              		.loc 1 96 0
+ 328 0136 FB8F     		ldrh	r3, [r7, #62]
+ 329 0138 7A6A     		ldr	r2, [r7, #36]
+ 330 013a 1344     		add	r3, r3, r2
+ 331 013c 97F82B20 		ldrb	r2, [r7, #43]
+ 332 0140 1A70     		strb	r2, [r3]
+  97:main.c        ****                         } else {
+ 333              		.loc 1 97 0
+ 334 0142 FB8F     		ldrh	r3, [r7, #62]
+ 335 0144 0133     		adds	r3, r3, #1
+ 336 0146 FB87     		strh	r3, [r7, #62]	@ movhi
+ 337              		.loc 1 103 0
+ 338 0148 5BE0     		b	.L8
+ 339              	.L22:
+ 100:main.c        ****                             total_received_bytes = 0;
+ 340              		.loc 1 100 0
+ 341 014a 0123     		movs	r3, #1
+ 342 014c 87F83D30 		strb	r3, [r7, #61]
+ 101:main.c        ****                         }
+ 343              		.loc 1 101 0
+ 344 0150 0023     		movs	r3, #0
+ 345 0152 FB87     		strh	r3, [r7, #62]	@ movhi
+ 346              		.loc 1 103 0
+ 347 0154 55E0     		b	.L8
+ 348              	.L13:
+ 104:main.c        ****                 // Read text until 0x03 arrives
+ 105:main.c        ****                 // TODO check for buffer overflow
+ 106:main.c        ****                 case READ_TEXT:
+ 107:main.c        ****                     if((received_char >= 'A' && received_char <= 'Z') || (received_char >= 'a' && r
+ 349              		.loc 1 107 0
+ 350 0156 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 351 015a 402B     		cmp	r3, #64
+ 352 015c 03D9     		bls	.L23
+ 353              		.loc 1 107 0 is_stmt 0 discriminator 1
+ 354 015e 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 355 0162 5A2B     		cmp	r3, #90
+ 356 0164 1BD9     		bls	.L24
+ 357              	.L23:
+ 358              		.loc 1 107 0 discriminator 3
+ 359 0166 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 360 016a 602B     		cmp	r3, #96
+ 361 016c 03D9     		bls	.L25
+ 362              		.loc 1 107 0 discriminator 4
+ 363 016e 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 364 0172 7A2B     		cmp	r3, #122
+ 365 0174 13D9     		bls	.L24
+ 366              	.L25:
+ 108:main.c        ****                         || (received_char >= '0' && received_char <= '9') || received_char == '-' |
+ 367              		.loc 1 108 0 is_stmt 1
+ 368 0176 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 369 017a 2F2B     		cmp	r3, #47
+ 370 017c 03D9     		bls	.L26
+ 371              		.loc 1 108 0 is_stmt 0 discriminator 1
+ 372 017e 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 373 0182 392B     		cmp	r3, #57
+ 374 0184 0BD9     		bls	.L24
+ 375              	.L26:
+ 376              		.loc 1 108 0 discriminator 3
+ 377 0186 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 378 018a 2D2B     		cmp	r3, #45
+ 379 018c 07D0     		beq	.L24
+ 380              		.loc 1 108 0 discriminator 4
+ 381 018e 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 382 0192 5F2B     		cmp	r3, #95
+ 383 0194 03D0     		beq	.L24
+ 109:main.c        ****                         || received_char == '=') {
+ 384              		.loc 1 109 0 is_stmt 1
+ 385 0196 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 386 019a 3D2B     		cmp	r3, #61
+ 387 019c 09D1     		bne	.L27
+ 388              	.L24:
+ 110:main.c        ****                             buffer[total_received_bytes] = received_char;
+ 389              		.loc 1 110 0
+ 390 019e FB8F     		ldrh	r3, [r7, #62]
+ 391 01a0 7A6A     		ldr	r2, [r7, #36]
+ 392 01a2 1344     		add	r3, r3, r2
+ 393 01a4 97F82B20 		ldrb	r2, [r7, #43]
+ 394 01a8 1A70     		strb	r2, [r3]
+ 111:main.c        ****                             total_received_bytes++;
+ 395              		.loc 1 111 0
+ 396 01aa FB8F     		ldrh	r3, [r7, #62]
+ 397 01ac 0133     		adds	r3, r3, #1
+ 398 01ae FB87     		strh	r3, [r7, #62]	@ movhi
+ 112:main.c        ****                         } else if(received_char == 0x03) {
+ 113:main.c        ****                             buffer[total_received_bytes] = received_char;
+ 114:main.c        ****                             read_state = IDLE;
+ 115:main.c        ****                         } else if(received_char == 0x01) {
+ 116:main.c        ****                             // Discard old message and start with new message
+ 117:main.c        ****                             total_received_bytes = 0;
+ 118:main.c        ****                             buffer[total_received_bytes] = received_char;
+ 119:main.c        ****                             total_received_bytes++;
+ 120:main.c        ****                             read_state= READ_HEADER;
+ 121:main.c        ****                         } else {
+ 122:main.c        ****                             read_state = READ_START;
+ 123:main.c        ****                             total_received_bytes = 0;
+ 124:main.c        ****                         }
+ 125:main.c        ****                         break;
+ 399              		.loc 1 125 0
+ 400 01b0 27E0     		b	.L8
+ 401              	.L27:
+ 112:main.c        ****                         } else if(received_char == 0x03) {
+ 402              		.loc 1 112 0
+ 403 01b2 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 404 01b6 032B     		cmp	r3, #3
+ 405 01b8 09D1     		bne	.L29
+ 113:main.c        ****                             read_state = IDLE;
+ 406              		.loc 1 113 0
+ 407 01ba FB8F     		ldrh	r3, [r7, #62]
+ 408 01bc 7A6A     		ldr	r2, [r7, #36]
+ 409 01be 1344     		add	r3, r3, r2
+ 410 01c0 97F82B20 		ldrb	r2, [r7, #43]
+ 411 01c4 1A70     		strb	r2, [r3]
+ 114:main.c        ****                         } else if(received_char == 0x01) {
+ 412              		.loc 1 114 0
+ 413 01c6 0023     		movs	r3, #0
+ 414 01c8 87F83D30 		strb	r3, [r7, #61]
+ 415              		.loc 1 125 0
+ 416 01cc 19E0     		b	.L8
+ 417              	.L29:
+ 115:main.c        ****                             // Discard old message and start with new message
+ 418              		.loc 1 115 0
+ 419 01ce 97F82B30 		ldrb	r3, [r7, #43]	@ zero_extendqisi2
+ 420 01d2 012B     		cmp	r3, #1
+ 421 01d4 0ED1     		bne	.L30
+ 117:main.c        ****                             buffer[total_received_bytes] = received_char;
+ 422              		.loc 1 117 0
+ 423 01d6 0023     		movs	r3, #0
+ 424 01d8 FB87     		strh	r3, [r7, #62]	@ movhi
+ 118:main.c        ****                             total_received_bytes++;
+ 425              		.loc 1 118 0
+ 426 01da FB8F     		ldrh	r3, [r7, #62]
+ 427 01dc 7A6A     		ldr	r2, [r7, #36]
+ 428 01de 1344     		add	r3, r3, r2
+ 429 01e0 97F82B20 		ldrb	r2, [r7, #43]
+ 430 01e4 1A70     		strb	r2, [r3]
+ 119:main.c        ****                             read_state= READ_HEADER;
+ 431              		.loc 1 119 0
+ 432 01e6 FB8F     		ldrh	r3, [r7, #62]
+ 433 01e8 0133     		adds	r3, r3, #1
+ 434 01ea FB87     		strh	r3, [r7, #62]	@ movhi
+ 120:main.c        ****                         } else {
+ 435              		.loc 1 120 0
+ 436 01ec 0223     		movs	r3, #2
+ 437 01ee 87F83D30 		strb	r3, [r7, #61]
+ 438              		.loc 1 125 0
+ 439 01f2 06E0     		b	.L8
+ 440              	.L30:
+ 122:main.c        ****                             total_received_bytes = 0;
+ 441              		.loc 1 122 0
+ 442 01f4 0123     		movs	r3, #1
+ 443 01f6 87F83D30 		strb	r3, [r7, #61]
+ 123:main.c        ****                         }
+ 444              		.loc 1 123 0
+ 445 01fa 0023     		movs	r3, #0
+ 446 01fc FB87     		strh	r3, [r7, #62]	@ movhi
+ 447              		.loc 1 125 0
+ 448 01fe 00E0     		b	.L8
+ 449              	.L45:
+  82:main.c        ****                 // Read header until 0x02 arrives
+ 450              		.loc 1 82 0
+ 451 0200 00BF     		nop
+ 452              	.L8:
+  72:main.c        ****             received_char = CDC_Device_ReceiveByte(&VirtualSerial_CDC_Interface);
+ 453              		.loc 1 72 0 discriminator 2
+ 454 0202 7B8F     		ldrh	r3, [r7, #58]
+ 455 0204 0133     		adds	r3, r3, #1
+ 456 0206 7B87     		strh	r3, [r7, #58]	@ movhi
+ 457              	.L7:
+  72:main.c        ****             received_char = CDC_Device_ReceiveByte(&VirtualSerial_CDC_Interface);
+ 458              		.loc 1 72 0 is_stmt 0 discriminator 1
+ 459 0208 7A8F     		ldrh	r2, [r7, #58]
+ 460 020a 3B8E     		ldrh	r3, [r7, #48]
+ 461 020c 9A42     		cmp	r2, r3
+ 462 020e FFF425AF 		bcc	.L31
+ 463              	.LBE2:
+ 126:main.c        ****                 case IDLE:
+ 127:main.c        ****                         break;
+ 128:main.c        ****             }
+ 129:main.c        ****         }
+ 130:main.c        **** 
+ 131:main.c        ****         // Complete Message arrived
+ 132:main.c        ****         if(read_state == IDLE) {
+ 464              		.loc 1 132 0 is_stmt 1
+ 465 0212 97F83D30 		ldrb	r3, [r7, #61]	@ zero_extendqisi2
+ 466 0216 002B     		cmp	r3, #0
+ 467 0218 40F05B81 		bne	.L32
+ 468              	.LBB3:
+ 133:main.c        ****             
+ 134:main.c        ****             // Decoded length of plaintext = 24 bits = 3 Bytes
+ 135:main.c        ****             // reserve extra byte as zero to stop decoding routine
+ 136:main.c        ****             char *encoded_length = (char *)calloc(5, sizeof(char));
+ 469              		.loc 1 136 0
+ 470 021c 0121     		movs	r1, #1
+ 471 021e 0520     		movs	r0, #5
+ 472 0220 FFF7FEFF 		bl	calloc
+ 473 0224 0346     		mov	r3, r0
+ 474 0226 3B62     		str	r3, [r7, #32]
+ 137:main.c        ****             memcpy(encoded_length, &buffer[1], 4);
+ 475              		.loc 1 137 0
+ 476 0228 7B6A     		ldr	r3, [r7, #36]
+ 477 022a 0133     		adds	r3, r3, #1
+ 478 022c 1B68     		ldr	r3, [r3]	@ unaligned
+ 479 022e 1A46     		mov	r2, r3
+ 480 0230 3B6A     		ldr	r3, [r7, #32]
+ 481 0232 1A60     		str	r2, [r3]	@ unaligned
+ 138:main.c        ****             char* decoded_length = (char *)calloc(3, sizeof(char));
+ 482              		.loc 1 138 0
+ 483 0234 0121     		movs	r1, #1
+ 484 0236 0320     		movs	r0, #3
+ 485 0238 FFF7FEFF 		bl	calloc
+ 486 023c 0346     		mov	r3, r0
+ 487 023e FB61     		str	r3, [r7, #28]
+ 139:main.c        ****             Base64decode(decoded_length, encoded_length);
+ 488              		.loc 1 139 0
+ 489 0240 396A     		ldr	r1, [r7, #32]
+ 490 0242 F869     		ldr	r0, [r7, #28]
+ 491 0244 FFF7FEFF 		bl	Base64decode
+ 140:main.c        **** 
+ 141:main.c        ****             // Only proceed if transmitted length is right
+ 142:main.c        ****             length_encoded_text = *((uint16_t *)decoded_length);
+ 492              		.loc 1 142 0
+ 493 0248 FB69     		ldr	r3, [r7, #28]
+ 494 024a 1B88     		ldrh	r3, [r3]	@ movhi
+ 495 024c BB85     		strh	r3, [r7, #44]	@ movhi
+ 143:main.c        ****             //length_decoded_text = 3*length_encoded_text/4;
+ 144:main.c        ****             if((total_received_bytes - HEADER_SIZE) == length_encoded_text) {
+ 496              		.loc 1 144 0
+ 497 024e FB8F     		ldrh	r3, [r7, #62]
+ 498 0250 A3F12602 		sub	r2, r3, #38
+ 499 0254 BB8D     		ldrh	r3, [r7, #44]
+ 500 0256 9A42     		cmp	r2, r3
+ 501 0258 40F03081 		bne	.L33
+ 502              	.LBB4:
+ 145:main.c        **** 
+ 146:main.c        ****                 // Decode nonce = 192 bits = 24 Byte
+ 147:main.c        ****                 // reserve extra byte as zero to stop decoding routine
+ 148:main.c        ****                 char *encoded_nonce = (char *)calloc(33, sizeof(char));
+ 503              		.loc 1 148 0
+ 504 025c 0121     		movs	r1, #1
+ 505 025e 2120     		movs	r0, #33
+ 506 0260 FFF7FEFF 		bl	calloc
+ 507 0264 0346     		mov	r3, r0
+ 508 0266 BB61     		str	r3, [r7, #24]
+ 149:main.c        ****                 memcpy(encoded_nonce, &buffer[5], 32);
+ 509              		.loc 1 149 0
+ 510 0268 7B6A     		ldr	r3, [r7, #36]
+ 511 026a 0533     		adds	r3, r3, #5
+ 512 026c 2022     		movs	r2, #32
+ 513 026e 1946     		mov	r1, r3
+ 514 0270 B869     		ldr	r0, [r7, #24]
+ 515 0272 FFF7FEFF 		bl	memcpy
+ 150:main.c        ****                 char *decoded_nonce = (char *)calloc(24, sizeof(char));
+ 516              		.loc 1 150 0
+ 517 0276 0121     		movs	r1, #1
+ 518 0278 1820     		movs	r0, #24
+ 519 027a FFF7FEFF 		bl	calloc
+ 520 027e 0346     		mov	r3, r0
+ 521 0280 7B61     		str	r3, [r7, #20]
+ 151:main.c        ****                 Base64decode(decoded_nonce, encoded_nonce);
+ 522              		.loc 1 151 0
+ 523 0282 B969     		ldr	r1, [r7, #24]
+ 524 0284 7869     		ldr	r0, [r7, #20]
+ 525 0286 FFF7FEFF 		bl	Base64decode
+ 152:main.c        **** 
+ 153:main.c        ****                 // Decode Text in place
+ 154:main.c        ****                 // Stops when it reaches byte 0x03
+ 155:main.c        ****                 length_decoded_text = Base64decode(&buffer[HEADER_SIZE], &buffer[HEADER_SIZE]);
+ 526              		.loc 1 155 0
+ 527 028a 7B6A     		ldr	r3, [r7, #36]
+ 528 028c 03F12602 		add	r2, r3, #38
+ 529 0290 7B6A     		ldr	r3, [r7, #36]
+ 530 0292 2633     		adds	r3, r3, #38
+ 531 0294 1946     		mov	r1, r3
+ 532 0296 1046     		mov	r0, r2
+ 533 0298 FFF7FEFF 		bl	Base64decode
+ 534 029c 0346     		mov	r3, r0
+ 535 029e FB85     		strh	r3, [r7, #46]	@ movhi
+ 536              	.LBB5:
+ 156:main.c        **** 
+ 157:main.c        ****                 // Set all remaining bytes to zero
+ 158:main.c        ****                 for (uint16_t i = HEADER_SIZE + length_decoded_text; i < MAX_MESSAGE_SIZE + crypto_
+ 537              		.loc 1 158 0
+ 538 02a0 FB8D     		ldrh	r3, [r7, #46]	@ movhi
+ 539 02a2 2633     		adds	r3, r3, #38
+ 540 02a4 3B87     		strh	r3, [r7, #56]	@ movhi
+ 541 02a6 0BE0     		b	.L34
+ 542              	.L47:
+ 543              		.align	2
+ 544              	.L46:
+ 545 02a8 00000000 		.word	randombytes_dilbert_implementation
+ 546 02ac 00000000 		.word	VirtualSerial_CDC_Interface
+ 547              	.L35:
+ 159:main.c        ****                     buffer[i] = 0;
+ 548              		.loc 1 159 0 discriminator 3
+ 549 02b0 3B8F     		ldrh	r3, [r7, #56]
+ 550 02b2 7A6A     		ldr	r2, [r7, #36]
+ 551 02b4 1344     		add	r3, r3, r2
+ 552 02b6 0022     		movs	r2, #0
+ 553 02b8 1A70     		strb	r2, [r3]
+ 158:main.c        ****                     buffer[i] = 0;
+ 554              		.loc 1 158 0 discriminator 3
+ 555 02ba 3B8F     		ldrh	r3, [r7, #56]
+ 556 02bc 0133     		adds	r3, r3, #1
+ 557 02be 3B87     		strh	r3, [r7, #56]	@ movhi
+ 558              	.L34:
+ 158:main.c        ****                     buffer[i] = 0;
+ 559              		.loc 1 158 0 is_stmt 0 discriminator 1
+ 560 02c0 3B8F     		ldrh	r3, [r7, #56]
+ 561 02c2 4AF62732 		movw	r2, #43815
+ 562 02c6 9342     		cmp	r3, r2
+ 563 02c8 F2D9     		bls	.L35
+ 564              	.LBE5:
+ 160:main.c        ****                 }
+ 161:main.c        ****                 // Encrpyt Text
+ 162:main.c        ****                 // Create key
+ 163:main.c        ****                 
+ 164:main.c        ****                 unsigned char *key = (unsigned char*)calloc(32, sizeof(char));
+ 565              		.loc 1 164 0 is_stmt 1
+ 566 02ca 0121     		movs	r1, #1
+ 567 02cc 2020     		movs	r0, #32
+ 568 02ce FFF7FEFF 		bl	calloc
+ 569 02d2 0346     		mov	r3, r0
+ 570 02d4 3B61     		str	r3, [r7, #16]
+ 165:main.c        ****                 memcpy(key, g_chipid, 16);
+ 571              		.loc 1 165 0
+ 572 02d6 3B69     		ldr	r3, [r7, #16]
+ 573 02d8 824A     		ldr	r2, .L48
+ 574 02da 1468     		ldr	r4, [r2]	@ unaligned
+ 575 02dc 5068     		ldr	r0, [r2, #4]	@ unaligned
+ 576 02de 9168     		ldr	r1, [r2, #8]	@ unaligned
+ 577 02e0 D268     		ldr	r2, [r2, #12]	@ unaligned
+ 578 02e2 1C60     		str	r4, [r3]	@ unaligned
+ 579 02e4 5860     		str	r0, [r3, #4]	@ unaligned
+ 580 02e6 9960     		str	r1, [r3, #8]	@ unaligned
+ 581 02e8 DA60     		str	r2, [r3, #12]	@ unaligned
+ 166:main.c        ****                 memcpy(key+16, g_chipid, 16);
+ 582              		.loc 1 166 0
+ 583 02ea 3B69     		ldr	r3, [r7, #16]
+ 584 02ec 1033     		adds	r3, r3, #16
+ 585 02ee 7D4A     		ldr	r2, .L48
+ 586 02f0 1468     		ldr	r4, [r2]	@ unaligned
+ 587 02f2 5068     		ldr	r0, [r2, #4]	@ unaligned
+ 588 02f4 9168     		ldr	r1, [r2, #8]	@ unaligned
+ 589 02f6 D268     		ldr	r2, [r2, #12]	@ unaligned
+ 590 02f8 1C60     		str	r4, [r3]	@ unaligned
+ 591 02fa 5860     		str	r0, [r3, #4]	@ unaligned
+ 592 02fc 9960     		str	r1, [r3, #8]	@ unaligned
+ 593 02fe DA60     		str	r2, [r3, #12]	@ unaligned
+ 167:main.c        ****                 
+ 168:main.c        ****                 
+ 169:main.c        ****                 uint16_t length_decoded_cipher = length_decoded_text + crypto_secretbox_MACBYTES;
+ 594              		.loc 1 169 0
+ 595 0300 FB8D     		ldrh	r3, [r7, #46]	@ movhi
+ 596 0302 1033     		adds	r3, r3, #16
+ 597 0304 FB81     		strh	r3, [r7, #14]	@ movhi
+ 170:main.c        **** 
+ 171:main.c        ****                 //unsigned char *encrypted = (unsigned char*)calloc(length_decoded_cipher, sizeof(c
+ 172:main.c        **** 
+ 173:main.c        ****                 crypto_secretbox_easy((unsigned char*)&buffer[HEADER_SIZE], (unsigned char*)&buffer
+ 598              		.loc 1 173 0
+ 599 0306 7B6A     		ldr	r3, [r7, #36]
+ 600 0308 03F12600 		add	r0, r3, #38
+ 601 030c 7B6A     		ldr	r3, [r7, #36]
+ 602 030e 03F12601 		add	r1, r3, #38
+ 603 0312 FB8D     		ldrh	r3, [r7, #46]
+ 604 0314 4FF00004 		mov	r4, #0
+ 605 0318 3A69     		ldr	r2, [r7, #16]
+ 606 031a 0192     		str	r2, [sp, #4]
+ 607 031c 7A69     		ldr	r2, [r7, #20]
+ 608 031e 0092     		str	r2, [sp]
+ 609 0320 1A46     		mov	r2, r3
+ 610 0322 2346     		mov	r3, r4
+ 611 0324 FFF7FEFF 		bl	crypto_secretbox_easy
+ 174:main.c        ****                                         length_decoded_text, (unsigned char*)decoded_nonce, key);
+ 175:main.c        ****             /*    
+ 176:main.c        ****                 // Encode cipher
+ 177:main.c        ****                 uint16_t length_encoded_cipher = Base64encode_len(length_decoded_cipher);
+ 178:main.c        ****                 char *encoded_cipher = (char *)calloc(length_encoded_cipher, sizeof(char));
+ 179:main.c        ****                 Base64encode(encoded_cipher, (const char*)&buffer[HEADER_SIZE], length_decoded_ciph
+ 180:main.c        ****                 // Strip last zeros
+ 181:main.c        ****                 while (encoded_cipher[length_encoded_cipher-1] == 0) {
+ 182:main.c        ****                     length_encoded_cipher--;
+ 183:main.c        ****                 }
+ 184:main.c        ****             */
+ 185:main.c        ****             
+ 186:main.c        ****                 uint16_t length_encoded_cipher = Base64encode_len(length_decoded_cipher);
+ 612              		.loc 1 186 0
+ 613 0328 FB89     		ldrh	r3, [r7, #14]
+ 614 032a 1846     		mov	r0, r3
+ 615 032c FFF7FEFF 		bl	Base64encode_len
+ 616 0330 0346     		mov	r3, r0
+ 617 0332 FB86     		strh	r3, [r7, #54]	@ movhi
+ 618              	.LBB6:
+ 187:main.c        ****                 // Move cipher in bytes of 3 to make room for encoding                
+ 188:main.c        ****                 for (uint16_t i = (length_decoded_cipher-1)/3; i > 0; i--) {
+ 619              		.loc 1 188 0
+ 620 0334 FB89     		ldrh	r3, [r7, #14]
+ 621 0336 013B     		subs	r3, r3, #1
+ 622 0338 6B4A     		ldr	r2, .L48+4
+ 623 033a 82FB0312 		smull	r1, r2, r2, r3
+ 624 033e DB17     		asrs	r3, r3, #31
+ 625 0340 D31A     		subs	r3, r2, r3
+ 626 0342 BB86     		strh	r3, [r7, #52]	@ movhi
+ 627 0344 1BE0     		b	.L36
+ 628              	.L37:
+ 189:main.c        ****                     memmove(&buffer[HEADER_SIZE + 4*i], &buffer[HEADER_SIZE + 3*i], 3);
+ 629              		.loc 1 189 0 discriminator 3
+ 630 0346 BB8E     		ldrh	r3, [r7, #52]
+ 631 0348 9B00     		lsls	r3, r3, #2
+ 632 034a 2633     		adds	r3, r3, #38
+ 633 034c 1A46     		mov	r2, r3
+ 634 034e 7B6A     		ldr	r3, [r7, #36]
+ 635 0350 9818     		adds	r0, r3, r2
+ 636 0352 BA8E     		ldrh	r2, [r7, #52]
+ 637 0354 1346     		mov	r3, r2
+ 638 0356 5B00     		lsls	r3, r3, #1
+ 639 0358 1344     		add	r3, r3, r2
+ 640 035a 2633     		adds	r3, r3, #38
+ 641 035c 1A46     		mov	r2, r3
+ 642 035e 7B6A     		ldr	r3, [r7, #36]
+ 643 0360 1344     		add	r3, r3, r2
+ 644 0362 0322     		movs	r2, #3
+ 645 0364 1946     		mov	r1, r3
+ 646 0366 FFF7FEFF 		bl	memmove
+ 190:main.c        ****                     buffer[HEADER_SIZE + 4*i +3] = 0;
+ 647              		.loc 1 190 0 discriminator 3
+ 648 036a BB8E     		ldrh	r3, [r7, #52]
+ 649 036c 9B00     		lsls	r3, r3, #2
+ 650 036e 2933     		adds	r3, r3, #41
+ 651 0370 7A6A     		ldr	r2, [r7, #36]
+ 652 0372 1344     		add	r3, r3, r2
+ 653 0374 0022     		movs	r2, #0
+ 654 0376 1A70     		strb	r2, [r3]
+ 188:main.c        ****                     memmove(&buffer[HEADER_SIZE + 4*i], &buffer[HEADER_SIZE + 3*i], 3);
+ 655              		.loc 1 188 0 discriminator 3
+ 656 0378 BB8E     		ldrh	r3, [r7, #52]
+ 657 037a 013B     		subs	r3, r3, #1
+ 658 037c BB86     		strh	r3, [r7, #52]	@ movhi
+ 659              	.L36:
+ 188:main.c        ****                     memmove(&buffer[HEADER_SIZE + 4*i], &buffer[HEADER_SIZE + 3*i], 3);
+ 660              		.loc 1 188 0 is_stmt 0 discriminator 1
+ 661 037e BB8E     		ldrh	r3, [r7, #52]
+ 662 0380 002B     		cmp	r3, #0
+ 663 0382 E0D1     		bne	.L37
+ 664              	.LBE6:
+ 191:main.c        ****                 }
+ 192:main.c        ****                 // Encode every 3 Bit at a time
+ 193:main.c        ****                 // Last Byte has to be treated differently
+ 194:main.c        ****                 char temp[3] = {0};
+ 665              		.loc 1 194 0 is_stmt 1
+ 666 0384 07F10803 		add	r3, r7, #8
+ 667 0388 0021     		movs	r1, #0
+ 668 038a 0A46     		mov	r2, r1	@ movhi
+ 669 038c 1A80     		strh	r2, [r3]	@ movhi
+ 670 038e 0A46     		mov	r2, r1
+ 671 0390 9A70     		strb	r2, [r3, #2]
+ 195:main.c        ****                 char last[3] = {0};
+ 672              		.loc 1 195 0
+ 673 0392 3B1D     		adds	r3, r7, #4
+ 674 0394 0021     		movs	r1, #0
+ 675 0396 0A46     		mov	r2, r1	@ movhi
+ 676 0398 1A80     		strh	r2, [r3]	@ movhi
+ 677 039a 0A46     		mov	r2, r1
+ 678 039c 9A70     		strb	r2, [r3, #2]
+ 196:main.c        ****                 int16_t i = (length_decoded_cipher-1)/3;
+ 679              		.loc 1 196 0
+ 680 039e FB89     		ldrh	r3, [r7, #14]
+ 681 03a0 013B     		subs	r3, r3, #1
+ 682 03a2 514A     		ldr	r2, .L48+4
+ 683 03a4 82FB0312 		smull	r1, r2, r2, r3
+ 684 03a8 DB17     		asrs	r3, r3, #31
+ 685 03aa D31A     		subs	r3, r2, r3
+ 686 03ac 7B86     		strh	r3, [r7, #50]	@ movhi
+ 197:main.c        ****                 int16_t lastindex = i;
+ 687              		.loc 1 197 0
+ 688 03ae 7B8E     		ldrh	r3, [r7, #50]	@ movhi
+ 689 03b0 BB81     		strh	r3, [r7, #12]	@ movhi
+ 198:main.c        ****                 memcpy(last, &buffer[HEADER_SIZE + 4*i], 3);                                
+ 690              		.loc 1 198 0
+ 691 03b2 B7F93230 		ldrsh	r3, [r7, #50]
+ 692 03b6 9B00     		lsls	r3, r3, #2
+ 693 03b8 2633     		adds	r3, r3, #38
+ 694 03ba 1A46     		mov	r2, r3
+ 695 03bc 7B6A     		ldr	r3, [r7, #36]
+ 696 03be 1A44     		add	r2, r2, r3
+ 697 03c0 3B1D     		adds	r3, r7, #4
+ 698 03c2 1188     		ldrh	r1, [r2]	@ unaligned
+ 699 03c4 9278     		ldrb	r2, [r2, #2]
+ 700 03c6 1980     		strh	r1, [r3]	@ unaligned
+ 701 03c8 9A70     		strb	r2, [r3, #2]
+ 199:main.c        ****                 for (; i >= 0; i--) {
+ 702              		.loc 1 199 0
+ 703 03ca 1FE0     		b	.L38
+ 704              	.L39:
+ 200:main.c        ****                     memcpy(temp, &buffer[HEADER_SIZE + 4*i], 3);
+ 705              		.loc 1 200 0 discriminator 2
+ 706 03cc B7F93230 		ldrsh	r3, [r7, #50]
+ 707 03d0 9B00     		lsls	r3, r3, #2
+ 708 03d2 2633     		adds	r3, r3, #38
+ 709 03d4 1A46     		mov	r2, r3
+ 710 03d6 7B6A     		ldr	r3, [r7, #36]
+ 711 03d8 1A44     		add	r2, r2, r3
+ 712 03da 07F10803 		add	r3, r7, #8
+ 713 03de 1188     		ldrh	r1, [r2]	@ unaligned
+ 714 03e0 9278     		ldrb	r2, [r2, #2]
+ 715 03e2 1980     		strh	r1, [r3]	@ unaligned
+ 716 03e4 9A70     		strb	r2, [r3, #2]
+ 201:main.c        ****                     Base64encode(&buffer[HEADER_SIZE + 4*i], temp, 3);
+ 717              		.loc 1 201 0 discriminator 2
+ 718 03e6 B7F93230 		ldrsh	r3, [r7, #50]
+ 719 03ea 9B00     		lsls	r3, r3, #2
+ 720 03ec 2633     		adds	r3, r3, #38
+ 721 03ee 1A46     		mov	r2, r3
+ 722 03f0 7B6A     		ldr	r3, [r7, #36]
+ 723 03f2 1344     		add	r3, r3, r2
+ 724 03f4 07F10801 		add	r1, r7, #8
+ 725 03f8 0322     		movs	r2, #3
+ 726 03fa 1846     		mov	r0, r3
+ 727 03fc FFF7FEFF 		bl	Base64encode
+ 199:main.c        ****                 for (; i >= 0; i--) {
+ 728              		.loc 1 199 0 discriminator 2
+ 729 0400 B7F93230 		ldrsh	r3, [r7, #50]
+ 730 0404 9BB2     		uxth	r3, r3
+ 731 0406 013B     		subs	r3, r3, #1
+ 732 0408 9BB2     		uxth	r3, r3
+ 733 040a 7B86     		strh	r3, [r7, #50]	@ movhi
+ 734              	.L38:
+ 199:main.c        ****                 for (; i >= 0; i--) {
+ 735              		.loc 1 199 0 is_stmt 0 discriminator 1
+ 736 040c B7F93230 		ldrsh	r3, [r7, #50]
+ 737 0410 002B     		cmp	r3, #0
+ 738 0412 DBDA     		bge	.L39
+ 202:main.c        ****                 }
+ 203:main.c        ****                 if (last[1]== 0)
+ 739              		.loc 1 203 0 is_stmt 1
+ 740 0414 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 741 0416 002B     		cmp	r3, #0
+ 742 0418 07D1     		bne	.L40
+ 204:main.c        ****                     buffer[HEADER_SIZE + 4*lastindex +2] = '=';
+ 743              		.loc 1 204 0
+ 744 041a B7F90C30 		ldrsh	r3, [r7, #12]
+ 745 041e 9B00     		lsls	r3, r3, #2
+ 746 0420 2833     		adds	r3, r3, #40
+ 747 0422 7A6A     		ldr	r2, [r7, #36]
+ 748 0424 1344     		add	r3, r3, r2
+ 749 0426 3D22     		movs	r2, #61
+ 750 0428 1A70     		strb	r2, [r3]
+ 751              	.L40:
+ 205:main.c        ****                 if (last[2]== 0)
+ 752              		.loc 1 205 0
+ 753 042a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 754 042c 002B     		cmp	r3, #0
+ 755 042e 0BD1     		bne	.L42
+ 206:main.c        ****                     buffer[HEADER_SIZE + 4*lastindex +3] = '=';
+ 756              		.loc 1 206 0
+ 757 0430 B7F90C30 		ldrsh	r3, [r7, #12]
+ 758 0434 9B00     		lsls	r3, r3, #2
+ 759 0436 2933     		adds	r3, r3, #41
+ 760 0438 7A6A     		ldr	r2, [r7, #36]
+ 761 043a 1344     		add	r3, r3, r2
+ 762 043c 3D22     		movs	r2, #61
+ 763 043e 1A70     		strb	r2, [r3]
+ 207:main.c        ****                 
+ 208:main.c        ****             
+ 209:main.c        ****                 while (buffer[HEADER_SIZE + length_encoded_cipher-1] == 0) {
+ 764              		.loc 1 209 0
+ 765 0440 02E0     		b	.L42
+ 766              	.L43:
+ 210:main.c        ****                     length_encoded_cipher--;
+ 767              		.loc 1 210 0
+ 768 0442 FB8E     		ldrh	r3, [r7, #54]
+ 769 0444 013B     		subs	r3, r3, #1
+ 770 0446 FB86     		strh	r3, [r7, #54]	@ movhi
+ 771              	.L42:
+ 209:main.c        ****                     length_encoded_cipher--;
+ 772              		.loc 1 209 0
+ 773 0448 FB8E     		ldrh	r3, [r7, #54]
+ 774 044a 2533     		adds	r3, r3, #37
+ 775 044c 7A6A     		ldr	r2, [r7, #36]
+ 776 044e 1344     		add	r3, r3, r2
+ 777 0450 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 778 0452 002B     		cmp	r3, #0
+ 779 0454 F5D0     		beq	.L43
+ 211:main.c        ****                 }
+ 212:main.c        ****             
+ 213:main.c        ****                 // Decode every      
+ 214:main.c        ****                 // Write length of encoded ciphertext into Header
+ 215:main.c        ****                 *((uint16_t *)decoded_length) = length_encoded_cipher;
+ 780              		.loc 1 215 0
+ 781 0456 FB69     		ldr	r3, [r7, #28]
+ 782 0458 FA8E     		ldrh	r2, [r7, #54]	@ movhi
+ 783 045a 1A80     		strh	r2, [r3]	@ movhi
+ 216:main.c        **** 
+ 217:main.c        ****                 // Encode header
+ 218:main.c        ****                 Base64encode(encoded_length, decoded_length, 3);
+ 784              		.loc 1 218 0
+ 785 045c 0322     		movs	r2, #3
+ 786 045e F969     		ldr	r1, [r7, #28]
+ 787 0460 386A     		ldr	r0, [r7, #32]
+ 788 0462 FFF7FEFF 		bl	Base64encode
+ 219:main.c        **** 
+ 220:main.c        ****                 // Make Protocol
+ 221:main.c        ****                 buffer[0] = 0x01;
+ 789              		.loc 1 221 0
+ 790 0466 7B6A     		ldr	r3, [r7, #36]
+ 791 0468 0122     		movs	r2, #1
+ 792 046a 1A70     		strb	r2, [r3]
+ 222:main.c        ****                 memcpy(&buffer[1], encoded_length, 4);
+ 793              		.loc 1 222 0
+ 794 046c 7B6A     		ldr	r3, [r7, #36]
+ 795 046e 0133     		adds	r3, r3, #1
+ 796 0470 3A6A     		ldr	r2, [r7, #32]
+ 797 0472 1268     		ldr	r2, [r2]	@ unaligned
+ 798 0474 1A60     		str	r2, [r3]	@ unaligned
+ 223:main.c        ****                 buffer[5] = 0x02;
+ 799              		.loc 1 223 0
+ 800 0476 7B6A     		ldr	r3, [r7, #36]
+ 801 0478 0533     		adds	r3, r3, #5
+ 802 047a 0222     		movs	r2, #2
+ 803 047c 1A70     		strb	r2, [r3]
+ 224:main.c        ****                 memmove(&buffer[6], &buffer[HEADER_SIZE], length_encoded_cipher);
+ 804              		.loc 1 224 0
+ 805 047e 7B6A     		ldr	r3, [r7, #36]
+ 806 0480 981D     		adds	r0, r3, #6
+ 807 0482 7B6A     		ldr	r3, [r7, #36]
+ 808 0484 2633     		adds	r3, r3, #38
+ 809 0486 FA8E     		ldrh	r2, [r7, #54]
+ 810 0488 1946     		mov	r1, r3
+ 811 048a FFF7FEFF 		bl	memmove
+ 225:main.c        ****                 buffer[length_encoded_cipher + 6] = 0x03;
+ 812              		.loc 1 225 0
+ 813 048e FB8E     		ldrh	r3, [r7, #54]
+ 814 0490 0633     		adds	r3, r3, #6
+ 815 0492 7A6A     		ldr	r2, [r7, #36]
+ 816 0494 1344     		add	r3, r3, r2
+ 817 0496 0322     		movs	r2, #3
+ 818 0498 1A70     		strb	r2, [r3]
+ 226:main.c        ****             
+ 227:main.c        ****                 // Send Protocol
+ 228:main.c        ****                 /*
+ 229:main.c        ****                 if(length_encoded_cipher + 7 > 32768) {
+ 230:main.c        ****                     // send first packet
+ 231:main.c        ****                     CDC_Device_SendData(&VirtualSerial_CDC_Interface, buffer, 32761);
+ 232:main.c        ****                     CDC_Device_USBTask(&VirtualSerial_CDC_Interface);
+ 233:main.c        ****                     length_encoded_cipher -= 32761;
+ 234:main.c        ****                     // Send rest
+ 235:main.c        ****                     CDC_Device_SendData(&VirtualSerial_CDC_Interface, &buffer[32761], length_encode
+ 236:main.c        ****                 } else {
+ 237:main.c        ****                     
+ 238:main.c        ****                 }*/
+ 239:main.c        ****                 CDC_Device_SendData(&VirtualSerial_CDC_Interface, buffer, length_encoded_cipher+7);
+ 819              		.loc 1 239 0
+ 820 049a FB8E     		ldrh	r3, [r7, #54]	@ movhi
+ 821 049c 0733     		adds	r3, r3, #7
+ 822 049e 9BB2     		uxth	r3, r3
+ 823 04a0 1A46     		mov	r2, r3
+ 824 04a2 796A     		ldr	r1, [r7, #36]
+ 825 04a4 1148     		ldr	r0, .L48+8
+ 826 04a6 FFF7FEFF 		bl	CDC_Device_SendData
+ 240:main.c        ****                 //CDC_Device_SendData(&VirtualSerial_CDC_Interface, &buffer[HEADER_SIZE], length_en
+ 241:main.c        **** 
+ 242:main.c        ****                 
+ 243:main.c        ****                 
+ 244:main.c        ****                 //free(encrypted);
+ 245:main.c        ****                 
+ 246:main.c        ****                 //free(encoded_cipher);
+ 247:main.c        ****                 free(key);
+ 827              		.loc 1 247 0
+ 828 04aa 3869     		ldr	r0, [r7, #16]
+ 829 04ac FFF7FEFF 		bl	free
+ 248:main.c        ****                 free(decoded_nonce);
+ 830              		.loc 1 248 0
+ 831 04b0 7869     		ldr	r0, [r7, #20]
+ 832 04b2 FFF7FEFF 		bl	free
+ 249:main.c        ****                 free(encoded_nonce);
+ 833              		.loc 1 249 0
+ 834 04b6 B869     		ldr	r0, [r7, #24]
+ 835 04b8 FFF7FEFF 		bl	free
+ 836              	.L33:
+ 837              	.LBE4:
+ 250:main.c        ****             }
+ 251:main.c        ****             free(decoded_length);
+ 838              		.loc 1 251 0
+ 839 04bc F869     		ldr	r0, [r7, #28]
+ 840 04be FFF7FEFF 		bl	free
+ 252:main.c        ****             free(encoded_length);
+ 841              		.loc 1 252 0
+ 842 04c2 386A     		ldr	r0, [r7, #32]
+ 843 04c4 FFF7FEFF 		bl	free
+ 253:main.c        ****             
+ 254:main.c        ****            
+ 255:main.c        ****             
+ 256:main.c        ****             read_state = READ_START;
+ 844              		.loc 1 256 0
+ 845 04c8 0123     		movs	r3, #1
+ 846 04ca 87F83D30 		strb	r3, [r7, #61]
+ 257:main.c        ****             total_received_bytes = 0;
+ 847              		.loc 1 257 0
+ 848 04ce 0023     		movs	r3, #0
+ 849 04d0 FB87     		strh	r3, [r7, #62]	@ movhi
+ 850              	.L32:
+ 851              	.LBE3:
+ 258:main.c        **** 
+ 259:main.c        ****         }  
+ 260:main.c        **** 
+ 261:main.c        ****         CDC_Device_USBTask(&VirtualSerial_CDC_Interface);
+ 852              		.loc 1 261 0
+ 853 04d2 0648     		ldr	r0, .L48+8
+ 854 04d4 FFF7FEFF 		bl	CDC_Device_USBTask
+  71:main.c        ****         for (uint16_t i = 0; i < received_bytes; i++) {
+ 855              		.loc 1 71 0
+ 856 04d8 B8E5     		b	.L5
+ 857              	.L44:
+ 262:main.c        ****         
+ 263:main.c        ****     }
+ 264:main.c        ****     
+ 265:main.c        **** }...
+ 858              		.loc 1 265 0
+ 859 04da 1846     		mov	r0, r3
+ 860 04dc 4437     		adds	r7, r7, #68
+ 861              	.LCFI5:
+ 862              		.cfi_def_cfa_offset 12
+ 863 04de BD46     		mov	sp, r7
+ 864              	.LCFI6:
+ 865              		.cfi_def_cfa_register 13
+ 866              		@ sp needed
+ 867 04e0 90BD     		pop	{r4, r7, pc}
+ 868              	.L49:
+ 869 04e2 00BF     		.align	2
+ 870              	.L48:
+ 871 04e4 00000000 		.word	g_chipid
+ 872 04e8 56555555 		.word	1431655766
+ 873 04ec 00000000 		.word	VirtualSerial_CDC_Interface
+ 874              		.cfi_endproc
+ 875              	.LFE194:
+ 877              		.text
+ 878              	.Letext0:
+ 879              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
+ 880              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
+ 881              		.file 4 "/usr/lib/gcc/arm-none-eabi/7.2.1/include/stddef.h"
+ 882              		.file 5 "/usr/arm-none-eabi/include/sys/lock.h"
+ 883              		.file 6 "/usr/arm-none-eabi/include/sys/_types.h"
+ 884              		.file 7 "/usr/arm-none-eabi/include/sys/reent.h"
+ 885              		.file 8 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/CMSIS/Include/core_cm4.h"
+ 886              		.file 9 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/CMSIS/Infineon/XMC4500_series/Include/system_X
+ 887              		.file 10 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/CMSIS/Infineon/XMC4500_series/Include/XMC4500
+ 888              		.file 11 "/usr/arm-none-eabi/include/stdlib.h"
+ 889              		.file 12 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_usbd_regs.h"
+ 890              		.file 13 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc4_scu.h"
+ 891              		.file 14 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_usbd.h"
+ 892              		.file 15 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/ThirdPartyLibraries/USBlib/USB/Core/XMC4000/U
+ 893              		.file 16 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/ThirdPartyLibraries/USBlib/USB/Core/XMC4000/.
+ 894              		.file 17 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/ThirdPartyLibraries/USBlib/USB/Core/XMC4000/.
+ 895              		.file 18 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/ThirdPartyLibraries/USBlib/USB/Core/XMC4000/.
+ 896              		.file 19 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/ThirdPartyLibraries/USBlib/USB/Core/USBTask.h
+ 897              		.file 20 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/ThirdPartyLibraries/USBlib/USB/Class/Device/.
+ 898              		.file 21 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/ThirdPartyLibraries/USBlib/USB/Class/Device/C
+ 899              		.file 22 "VirtualSerial.h"
+ 900              		.file 23 "/home/martin/Programming/ess/sodium/sodium-1.0.15/include/sodium/randombytes.h"
+ 901              		.file 24 "/home/martin/Programming/ess/sodium/sodium-1.0.15/include/sodium/randombytes_salsa20_ran
+ 902              		.file 25 "/home/martin/Programming/ess/sodium/sodium-1.0.15/include/sodium/randombytes_sysrandom.h
+ 903              		.file 26 "randombytes_dilbert.h"
+ 904              		.file 27 "testkey.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/ccbiDiKw.s:21     .data:0000000000000000 testkey
+     /tmp/ccbiDiKw.s:18     .data:0000000000000000 $d
+     /tmp/ccbiDiKw.s:58     .data:0000000000000020 testkey_len
+     /tmp/ccbiDiKw.s:65     .rodata:0000000000000000 clock_config
+     /tmp/ccbiDiKw.s:62     .rodata:0000000000000000 $d
+     /tmp/ccbiDiKw.s:81     .text.SystemCoreClockSetup:0000000000000000 $t
+     /tmp/ccbiDiKw.s:88     .text.SystemCoreClockSetup:0000000000000000 SystemCoreClockSetup
+     /tmp/ccbiDiKw.s:129    .text.SystemCoreClockSetup:0000000000000030 $d
+     /tmp/ccbiDiKw.s:134    .text.main:0000000000000000 $t
+     /tmp/ccbiDiKw.s:141    .text.main:0000000000000000 main
+     /tmp/ccbiDiKw.s:221    .text.main:0000000000000078 $d
+     /tmp/ccbiDiKw.s:225    .text.main:0000000000000088 $t
+     /tmp/ccbiDiKw.s:545    .text.main:00000000000002a8 $d
+     /tmp/ccbiDiKw.s:549    .text.main:00000000000002b0 $t
+     /tmp/ccbiDiKw.s:871    .text.main:00000000000004e4 $d
+                           .group:0000000000000000 wm4.0.c52906f746dd90abef2694639d8411ad
+                           .group:0000000000000000 wm4.USB.h.376.cfdb9ecb25c70fec676f585dede264a7
+                           .group:0000000000000000 wm4.Common.h.60.c2f00e237f5994003db83c2422602b22
+                           .group:0000000000000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
+                           .group:0000000000000000 wm4.features.h.33.863f3be0b2e521e624fcc7d6fa31d2ca
+                           .group:0000000000000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:0000000000000000 wm4._intsup.h.10.cce27fed8484c08a33f522034c30d2b5
+                           .group:0000000000000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:0000000000000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:0000000000000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:0000000000000000 wm4.newlib.h.8.e0fd068ed40a600f7426443f865dd469
+                           .group:0000000000000000 wm4.ieeefp.h.77.49bcce8a603f3d93a95080d6a3573782
+                           .group:0000000000000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
+                           .group:0000000000000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:0000000000000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
+                           .group:0000000000000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
+                           .group:0000000000000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
+                           .group:0000000000000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
+                           .group:0000000000000000 wm4._types.h.184.7120b8bb2e0149e2359704f4e2251b68
+                           .group:0000000000000000 wm4.reent.h.17.87376802c2b370b32a762f0a30482d9e
+                           .group:0000000000000000 wm4.cdefs.h.47.b99d69adf76e00132150c6ca209cbd8f
+                           .group:0000000000000000 wm4.string.h.15.dab3980bf35408a4c507182805e2de3a
+                           .group:0000000000000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
+                           .group:0000000000000000 wm4.BoardTypes.h.52.ca64813ccee737bcc2115eab5e075fdb
+                           .group:0000000000000000 wm4.CompilerSpecific.h.55.4a5e5ff77cd35e49c89cf2115251aee0
+                           .group:0000000000000000 wm4.Attributes.h.56.73b3ee26b0836c2dec569a5fa6f1b355
+                           .group:0000000000000000 wm4.xmc_device.h.61.ba2d082e12f51240746cffdd60d42b81
+                           .group:0000000000000000 wm4.XMC4500.h.55.9aa45b9b5790506b2dcb963e4e7adeaf
+                           .group:0000000000000000 wm4.core_cm4.h.32.6c6eb1c8daeca23ce7ba79c8e8120d52
+                           .group:0000000000000000 wm4.cmsis_gcc.h.26.91b63349961c35637933e4fba51b867b
+                           .group:0000000000000000 wm4.core_cm4.h.172.fdd5a388a160bb6ff767b7d7ee212268
+                           .group:0000000000000000 wm4.system_XMC4500.h.42.99124977c10ca8844a71949adbeabd70
+                           .group:0000000000000000 wm4.XMC4500.h.208.b340195df97f067735c4c769ba59985a
+                           .group:0000000000000000 wm4.xmc_device.h.1460.8860499b404961ffcfbb8d1fefcb2146
+                           .group:0000000000000000 wm4.xmc_common.h.92.3f4336a80569affab05a81145b87c2fc
+                           .group:0000000000000000 wm4.Endianness.h.57.3ac00c5468f4b91b806a0e6dba047e9c
+                           .group:0000000000000000 wm4.Common.h.105.4b937a9cc9dcdb26c3f07541b0b763a8
+                           .group:0000000000000000 wm4.USBController.h.49.cbfc73805155b6fff6267400af3f4eec
+                           .group:0000000000000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
+                           .group:0000000000000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d
+                           .group:0000000000000000 wm4.stdlib.h.56.d4493cd3736e51e9d56335045f26df45
+                           .group:0000000000000000 wm4.xmc_usbd_regs.h.80.57c6c85fa0ecbc9f8327ce445aebb9bc
+                           .group:0000000000000000 wm4.xmc4_scu.h.83.0449f5880ac071460ec1a8072311ea51
+                           .group:0000000000000000 wm4.xmc_usbd.h.122.ce57a9e6a9da48ee33ece02813c49593
+                           .group:0000000000000000 wm4.USBController_XMC4000.h.71.902f2653e09cb8b25245faa82cc6b907
+                           .group:0000000000000000 wm4.StdDescriptors.h.73.7d17e8be7a73b855fc0f8827303b7597
+                           .group:0000000000000000 wm4.Endpoint.h.73.3734de3e84ab23fb43d81f41fba620ec
+                           .group:0000000000000000 wm4.Device_XMC4000.h.86.6803bdd99d84e764a570256c87a24d0a
+                           .group:0000000000000000 wm4.StdRequestType.h.50.461dce94a3ee1fa9ff31ec5f28bd9699
+                           .group:0000000000000000 wm4.ConfigDescriptors.h.51.0d67ebf453774188abf5a503ba8f6735
+                           .group:0000000000000000 wm4.CDCClass.h.61.0d41ba255f7ce6f076fd610d8396dd1f
+                           .group:0000000000000000 wm4.CDCClassCommon.h.72.14ca578d8547e19a8a0c0d2d328483bd
+                           .group:0000000000000000 wm4.stdio.h.27.3fc80220048df77954e38daec3bb9670
+                           .group:0000000000000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
+                           .group:0000000000000000 wm4.types.h.40.e8c16e7ec36ba55f133d0616070e25fc
+                           .group:0000000000000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
+                           .group:0000000000000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
+                           .group:0000000000000000 wm4._timeval.h.30.0e8bfd94e85db17dda3286ee81496fe6
+                           .group:0000000000000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
+                           .group:0000000000000000 wm4.select.h.30.bbece7fa40993a78092dcc5805132560
+                           .group:0000000000000000 wm4.types.h.69.ed3eae3cf73030a737515151ebcab7a1
+                           .group:0000000000000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:0000000000000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
+                           .group:0000000000000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
+                           .group:0000000000000000 wm4.stdio.h.81.932d0c162786b883f622b8d05c120c78
+                           .group:0000000000000000 wm4.HIDClass.h.62.6bb32c59177b21a83b8e65c5a1b0a615
+                           .group:0000000000000000 wm4.HIDReportData.h.47.f13f4956396e0bec70835fe634fcc24d
+                           .group:0000000000000000 wm4.HIDParser.h.88.4b86fe94cb8d01713592cdd0391b606b
+                           .group:0000000000000000 wm4.HIDClassCommon.h.71.a60cdf9d7cd69289f43dde215b509193
+                           .group:0000000000000000 wm4.MassStorageClass.h.61.e9235f3bd090b77f36343f082ef93107
+                           .group:0000000000000000 wm4.MassStorageClassCommon.h.51.6aefecf288eb3c3c6c9bde61e26dd765
+                           .group:0000000000000000 wm4.Descriptors.h.44.84a4fd312957d0d42fb6aaa001850ba4
+                           .group:0000000000000000 wm4.export.h.3.069642e50a739d7e8bd572e0f5b91055
+                           .group:0000000000000000 wm4.version.h.7.67bf2b3b67cf03da91c1caf057b82007
+                           .group:0000000000000000 wm4.crypto_aead_aes256gcm.h.37.f06c3a2a9916b28d25ce521d8b6d30e4
+                           .group:0000000000000000 wm4.crypto_aead_chacha20poly1305.h.16.67f32ece6ebd6cc049f0715e6b0e69ad
+                           .group:0000000000000000 wm4.crypto_aead_xchacha20poly1305.h.14.207cc4aaabdc929ff2099eb0d69ab920
+                           .group:0000000000000000 wm4.crypto_auth_hmacsha512.h.15.eff7eeeca3f76c97d40891c6c26e8d71
+                           .group:0000000000000000 wm4.crypto_auth_hmacsha512256.h.15.b6821f43a6086964daa3251b570bc8c2
+                           .group:0000000000000000 wm4.crypto_auth.h.16.9400a02c736a8b1e08e491366cd27257
+                           .group:0000000000000000 wm4.crypto_auth_hmacsha256.h.15.0077d2e439598abd38aec2ace6d6cdd5
+                           .group:0000000000000000 wm4.crypto_stream_xsalsa20.h.23.33c3ee5c33e5737b167c543228736927
+                           .group:0000000000000000 wm4.crypto_box_curve25519xsalsa20poly1305.h.15.47fdbfcdf23b14f859f1ab73a31d81d2
+                           .group:0000000000000000 wm4.crypto_box.h.23.36db1a3020b3ecbf502815296470a53b
+                           .group:0000000000000000 wm4.crypto_core_hsalsa20.h.11.6f5bd4777af7294e0d853efc87225dec
+                           .group:0000000000000000 wm4.crypto_core_hchacha20.h.11.2c628b8667ba9d0d71939f1e8d47caaa
+                           .group:0000000000000000 wm4.crypto_core_salsa20.h.11.7ce30578633b77708df2486e23cf2d41
+                           .group:0000000000000000 wm4.crypto_core_salsa2012.h.11.c0d7428a1384f8b0cbb03fb392196513
+                           .group:0000000000000000 wm4.crypto_core_salsa208.h.11.2c518617446b00e93a2e8c0c6a2cb17d
+                           .group:0000000000000000 wm4.crypto_generichash_blake2b.h.38.4b6d675038c455959c90c43a75693d35
+                           .group:0000000000000000 wm4.crypto_generichash.h.16.771391b6badc9219de7753c54a91592a
+                           .group:0000000000000000 wm4.crypto_hash.h.23.c22d9cbc719debf3450c41dc1cb030f6
+                           .group:0000000000000000 wm4.crypto_kdf_blake2b.h.17.2fdb3afa142f0f4e2d520a0f2ed3aac9
+                           .group:0000000000000000 wm4.crypto_kdf.h.17.5c8c60d3d3b88115f88aea210415241a
+                           .group:0000000000000000 wm4.crypto_kx.h.15.b446ee9d39f22111a7b84c74adc80539
+                           .group:0000000000000000 wm4.crypto_onetimeauth_poly1305.h.2.97bcf3b0ea5506ed126bc3828081b2c6
+                           .group:0000000000000000 wm4.crypto_onetimeauth.h.21.dab310d1ac5639131792e5f80761f399
+                           .group:0000000000000000 wm4.limits.h.2.a76e572559edc4d4305b1cf624158ea8
+                           .group:0000000000000000 wm4.limits.h.60.56a1ae353e2028a24298ec6463b8b593
+                           .group:0000000000000000 wm4.crypto_pwhash_argon2i.h.17.7efc8566fd80d0aa25a92905ba299d17
+                           .group:0000000000000000 wm4.crypto_pwhash_argon2id.h.17.3776a3d43da07ec2a2ce4f641491ac5c
+                           .group:0000000000000000 wm4.crypto_pwhash.h.17.e54c9eb9913f339a6ab67545d97d3cb6
+                           .group:0000000000000000 wm4.crypto_scalarmult_curve25519.h.12.a04608b0d5b783eeaeea57e826f42071
+                           .group:0000000000000000 wm4.crypto_scalarmult.h.13.4b20e331e974ed3d97708f65e3d09ff7
+                           .group:0000000000000000 wm4.crypto_secretbox_xsalsa20poly1305.h.15.c9d857dc1ea465bb2950509a5d6827a2
+                           .group:0000000000000000 wm4.crypto_secretbox.h.16.74468d3816cf4274cae7e8825a2ac49f
+                           .group:0000000000000000 wm4.crypto_stream_chacha20.h.23.7f39f7dfc92696b60601f2c683245511
+                           .group:0000000000000000 wm4.crypto_secretstream_xchacha20poly1305.h.17.979cddb9e5bdd495ebbc5568661cf9c5
+                           .group:0000000000000000 wm4.crypto_shorthash_siphash24.h.16.818ac93010098b15c9530c60724e71cf
+                           .group:0000000000000000 wm4.crypto_shorthash.h.16.cf5f829a6555012edb52b2ee5653a691
+                           .group:0000000000000000 wm4.crypto_sign_ed25519.h.22.07782bf1d908046d9a70e5cf10af901c
+                           .group:0000000000000000 wm4.crypto_sign.h.28.a3247a8a761034c27bfcc3699825dc31
+                           .group:0000000000000000 wm4.crypto_stream.h.24.5deb85fa59e80e8dc0f5f7ac9213cae8
+                           .group:0000000000000000 wm4.crypto_stream_salsa20.h.23.fc01df25aec77276d8dd631cf7c6b2db
+                           .group:0000000000000000 wm4.randombytes.h.28.d92c4e5a57bf52557a9782c27b663a62
+                           .group:0000000000000000 wm4.utils.h.17.31ca9da2b3c3d17cb1ce98c0f528b530
+                           .group:0000000000000000 wm4.crypto_stream_xchacha20.h.23.1c98e48d07b332b3e5362ddf35d6f170
+                           .group:0000000000000000 wm4.crypto_box_curve25519xchacha20poly1305.h.16.c730b274b2e8e0087c78faa13784b0ca
+                           .group:0000000000000000 wm4.crypto_secretbox_xchacha20poly1305.h.15.79de7bec24244041b03221fe64a1405a
+                           .group:0000000000000000 wm4.crypto_pwhash_scryptsalsa208sha256.h.17.3af592158e8339e18e48fc8487319250
+                           .group:0000000000000000 wm4.crypto_stream_salsa2012.h.22.08bdb7be901746f92b3b3e7fcdc77e17
+                           .group:0000000000000000 wm4.crypto_stream_salsa208.h.22.9a5ceb273178e4c72d667eeaa8da7b04
+
+UNDEFINED SYMBOLS
+XMC_SCU_CLOCK_Init
+XMC_SCU_CLOCK_EnableUsbPll
+XMC_SCU_CLOCK_StartUsbPll
+XMC_SCU_CLOCK_SetUsbClockDivider
+XMC_SCU_CLOCK_SetUsbClockSource
+XMC_SCU_CLOCK_EnableClock
+SystemCoreClockUpdate
+calloc
+USB_Init
+randombytes_set_implementation
+sodium_init
+CDC_Device_BytesReceived
+CDC_Device_ReceiveByte
+Base64decode
+memcpy
+randombytes_dilbert_implementation
+VirtualSerial_CDC_Interface
+crypto_secretbox_easy
+Base64encode_len
+memmove
+Base64encode
+CDC_Device_SendData
+free
+CDC_Device_USBTask
+g_chipid

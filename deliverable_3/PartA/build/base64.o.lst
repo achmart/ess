@@ -1,0 +1,1184 @@
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"base64.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.rodata
+  17              		.align	2
+  20              	pr2six:
+  21 0000 40       		.byte	64
+  22 0001 40       		.byte	64
+  23 0002 40       		.byte	64
+  24 0003 40       		.byte	64
+  25 0004 40       		.byte	64
+  26 0005 40       		.byte	64
+  27 0006 40       		.byte	64
+  28 0007 40       		.byte	64
+  29 0008 40       		.byte	64
+  30 0009 40       		.byte	64
+  31 000a 40       		.byte	64
+  32 000b 40       		.byte	64
+  33 000c 40       		.byte	64
+  34 000d 40       		.byte	64
+  35 000e 40       		.byte	64
+  36 000f 40       		.byte	64
+  37 0010 40       		.byte	64
+  38 0011 40       		.byte	64
+  39 0012 40       		.byte	64
+  40 0013 40       		.byte	64
+  41 0014 40       		.byte	64
+  42 0015 40       		.byte	64
+  43 0016 40       		.byte	64
+  44 0017 40       		.byte	64
+  45 0018 40       		.byte	64
+  46 0019 40       		.byte	64
+  47 001a 40       		.byte	64
+  48 001b 40       		.byte	64
+  49 001c 40       		.byte	64
+  50 001d 40       		.byte	64
+  51 001e 40       		.byte	64
+  52 001f 40       		.byte	64
+  53 0020 40       		.byte	64
+  54 0021 40       		.byte	64
+  55 0022 40       		.byte	64
+  56 0023 40       		.byte	64
+  57 0024 40       		.byte	64
+  58 0025 40       		.byte	64
+  59 0026 40       		.byte	64
+  60 0027 40       		.byte	64
+  61 0028 40       		.byte	64
+  62 0029 40       		.byte	64
+  63 002a 40       		.byte	64
+  64 002b 40       		.byte	64
+  65 002c 40       		.byte	64
+  66 002d 3E       		.byte	62
+  67 002e 40       		.byte	64
+  68 002f 40       		.byte	64
+  69 0030 34       		.byte	52
+  70 0031 35       		.byte	53
+  71 0032 36       		.byte	54
+  72 0033 37       		.byte	55
+  73 0034 38       		.byte	56
+  74 0035 39       		.byte	57
+  75 0036 3A       		.byte	58
+  76 0037 3B       		.byte	59
+  77 0038 3C       		.byte	60
+  78 0039 3D       		.byte	61
+  79 003a 40       		.byte	64
+  80 003b 40       		.byte	64
+  81 003c 40       		.byte	64
+  82 003d 40       		.byte	64
+  83 003e 40       		.byte	64
+  84 003f 40       		.byte	64
+  85 0040 40       		.byte	64
+  86 0041 00       		.byte	0
+  87 0042 01       		.byte	1
+  88 0043 02       		.byte	2
+  89 0044 03       		.byte	3
+  90 0045 04       		.byte	4
+  91 0046 05       		.byte	5
+  92 0047 06       		.byte	6
+  93 0048 07       		.byte	7
+  94 0049 08       		.byte	8
+  95 004a 09       		.byte	9
+  96 004b 0A       		.byte	10
+  97 004c 0B       		.byte	11
+  98 004d 0C       		.byte	12
+  99 004e 0D       		.byte	13
+ 100 004f 0E       		.byte	14
+ 101 0050 0F       		.byte	15
+ 102 0051 10       		.byte	16
+ 103 0052 11       		.byte	17
+ 104 0053 12       		.byte	18
+ 105 0054 13       		.byte	19
+ 106 0055 14       		.byte	20
+ 107 0056 15       		.byte	21
+ 108 0057 16       		.byte	22
+ 109 0058 17       		.byte	23
+ 110 0059 18       		.byte	24
+ 111 005a 19       		.byte	25
+ 112 005b 40       		.byte	64
+ 113 005c 40       		.byte	64
+ 114 005d 40       		.byte	64
+ 115 005e 40       		.byte	64
+ 116 005f 3F       		.byte	63
+ 117 0060 40       		.byte	64
+ 118 0061 1A       		.byte	26
+ 119 0062 1B       		.byte	27
+ 120 0063 1C       		.byte	28
+ 121 0064 1D       		.byte	29
+ 122 0065 1E       		.byte	30
+ 123 0066 1F       		.byte	31
+ 124 0067 20       		.byte	32
+ 125 0068 21       		.byte	33
+ 126 0069 22       		.byte	34
+ 127 006a 23       		.byte	35
+ 128 006b 24       		.byte	36
+ 129 006c 25       		.byte	37
+ 130 006d 26       		.byte	38
+ 131 006e 27       		.byte	39
+ 132 006f 28       		.byte	40
+ 133 0070 29       		.byte	41
+ 134 0071 2A       		.byte	42
+ 135 0072 2B       		.byte	43
+ 136 0073 2C       		.byte	44
+ 137 0074 2D       		.byte	45
+ 138 0075 2E       		.byte	46
+ 139 0076 2F       		.byte	47
+ 140 0077 30       		.byte	48
+ 141 0078 31       		.byte	49
+ 142 0079 32       		.byte	50
+ 143 007a 33       		.byte	51
+ 144 007b 40       		.byte	64
+ 145 007c 40       		.byte	64
+ 146 007d 40       		.byte	64
+ 147 007e 40       		.byte	64
+ 148 007f 40       		.byte	64
+ 149 0080 40       		.byte	64
+ 150 0081 40       		.byte	64
+ 151 0082 40       		.byte	64
+ 152 0083 40       		.byte	64
+ 153 0084 40       		.byte	64
+ 154 0085 40       		.byte	64
+ 155 0086 40       		.byte	64
+ 156 0087 40       		.byte	64
+ 157 0088 40       		.byte	64
+ 158 0089 40       		.byte	64
+ 159 008a 40       		.byte	64
+ 160 008b 40       		.byte	64
+ 161 008c 40       		.byte	64
+ 162 008d 40       		.byte	64
+ 163 008e 40       		.byte	64
+ 164 008f 40       		.byte	64
+ 165 0090 40       		.byte	64
+ 166 0091 40       		.byte	64
+ 167 0092 40       		.byte	64
+ 168 0093 40       		.byte	64
+ 169 0094 40       		.byte	64
+ 170 0095 40       		.byte	64
+ 171 0096 40       		.byte	64
+ 172 0097 40       		.byte	64
+ 173 0098 40       		.byte	64
+ 174 0099 40       		.byte	64
+ 175 009a 40       		.byte	64
+ 176 009b 40       		.byte	64
+ 177 009c 40       		.byte	64
+ 178 009d 40       		.byte	64
+ 179 009e 40       		.byte	64
+ 180 009f 40       		.byte	64
+ 181 00a0 40       		.byte	64
+ 182 00a1 40       		.byte	64
+ 183 00a2 40       		.byte	64
+ 184 00a3 40       		.byte	64
+ 185 00a4 40       		.byte	64
+ 186 00a5 40       		.byte	64
+ 187 00a6 40       		.byte	64
+ 188 00a7 40       		.byte	64
+ 189 00a8 40       		.byte	64
+ 190 00a9 40       		.byte	64
+ 191 00aa 40       		.byte	64
+ 192 00ab 40       		.byte	64
+ 193 00ac 40       		.byte	64
+ 194 00ad 40       		.byte	64
+ 195 00ae 40       		.byte	64
+ 196 00af 40       		.byte	64
+ 197 00b0 40       		.byte	64
+ 198 00b1 40       		.byte	64
+ 199 00b2 40       		.byte	64
+ 200 00b3 40       		.byte	64
+ 201 00b4 40       		.byte	64
+ 202 00b5 40       		.byte	64
+ 203 00b6 40       		.byte	64
+ 204 00b7 40       		.byte	64
+ 205 00b8 40       		.byte	64
+ 206 00b9 40       		.byte	64
+ 207 00ba 40       		.byte	64
+ 208 00bb 40       		.byte	64
+ 209 00bc 40       		.byte	64
+ 210 00bd 40       		.byte	64
+ 211 00be 40       		.byte	64
+ 212 00bf 40       		.byte	64
+ 213 00c0 40       		.byte	64
+ 214 00c1 40       		.byte	64
+ 215 00c2 40       		.byte	64
+ 216 00c3 40       		.byte	64
+ 217 00c4 40       		.byte	64
+ 218 00c5 40       		.byte	64
+ 219 00c6 40       		.byte	64
+ 220 00c7 40       		.byte	64
+ 221 00c8 40       		.byte	64
+ 222 00c9 40       		.byte	64
+ 223 00ca 40       		.byte	64
+ 224 00cb 40       		.byte	64
+ 225 00cc 40       		.byte	64
+ 226 00cd 40       		.byte	64
+ 227 00ce 40       		.byte	64
+ 228 00cf 40       		.byte	64
+ 229 00d0 40       		.byte	64
+ 230 00d1 40       		.byte	64
+ 231 00d2 40       		.byte	64
+ 232 00d3 40       		.byte	64
+ 233 00d4 40       		.byte	64
+ 234 00d5 40       		.byte	64
+ 235 00d6 40       		.byte	64
+ 236 00d7 40       		.byte	64
+ 237 00d8 40       		.byte	64
+ 238 00d9 40       		.byte	64
+ 239 00da 40       		.byte	64
+ 240 00db 40       		.byte	64
+ 241 00dc 40       		.byte	64
+ 242 00dd 40       		.byte	64
+ 243 00de 40       		.byte	64
+ 244 00df 40       		.byte	64
+ 245 00e0 40       		.byte	64
+ 246 00e1 40       		.byte	64
+ 247 00e2 40       		.byte	64
+ 248 00e3 40       		.byte	64
+ 249 00e4 40       		.byte	64
+ 250 00e5 40       		.byte	64
+ 251 00e6 40       		.byte	64
+ 252 00e7 40       		.byte	64
+ 253 00e8 40       		.byte	64
+ 254 00e9 40       		.byte	64
+ 255 00ea 40       		.byte	64
+ 256 00eb 40       		.byte	64
+ 257 00ec 40       		.byte	64
+ 258 00ed 40       		.byte	64
+ 259 00ee 40       		.byte	64
+ 260 00ef 40       		.byte	64
+ 261 00f0 40       		.byte	64
+ 262 00f1 40       		.byte	64
+ 263 00f2 40       		.byte	64
+ 264 00f3 40       		.byte	64
+ 265 00f4 40       		.byte	64
+ 266 00f5 40       		.byte	64
+ 267 00f6 40       		.byte	64
+ 268 00f7 40       		.byte	64
+ 269 00f8 40       		.byte	64
+ 270 00f9 40       		.byte	64
+ 271 00fa 40       		.byte	64
+ 272 00fb 40       		.byte	64
+ 273 00fc 40       		.byte	64
+ 274 00fd 40       		.byte	64
+ 275 00fe 40       		.byte	64
+ 276 00ff 40       		.byte	64
+ 277              		.section	.text.Base64decode_len,"ax",%progbits
+ 278              		.align	1
+ 279              		.global	Base64decode_len
+ 280              		.syntax unified
+ 281              		.thumb
+ 282              		.thumb_func
+ 283              		.fpu fpv4-sp-d16
+ 285              	Base64decode_len:
+ 286              	.LFB0:
+ 287              		.file 1 "base64.c"
+   1:base64.c      **** /*
+   2:base64.c      ****  * Copyright (c) 2003 Apple Computer, Inc. All rights reserved.
+   3:base64.c      ****  *
+   4:base64.c      ****  * @APPLE_LICENSE_HEADER_START@
+   5:base64.c      ****  * 
+   6:base64.c      ****  * Copyright (c) 1999-2003 Apple Computer, Inc.  All Rights Reserved.
+   7:base64.c      ****  * 
+   8:base64.c      ****  * This file contains Original Code and/or Modifications of Original Code
+   9:base64.c      ****  * as defined in and that are subject to the Apple Public Source License
+  10:base64.c      ****  * Version 2.0 (the 'License'). You may not use this file except in
+  11:base64.c      ****  * compliance with the License. Please obtain a copy of the License at
+  12:base64.c      ****  * http://www.opensource.apple.com/apsl/ and read it before using this
+  13:base64.c      ****  * file.
+  14:base64.c      ****  * 
+  15:base64.c      ****  * The Original Code and all software distributed under the License are
+  16:base64.c      ****  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
+  17:base64.c      ****  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
+  18:base64.c      ****  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,
+  19:base64.c      ****  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
+  20:base64.c      ****  * Please see the License for the specific language governing rights and
+  21:base64.c      ****  * limitations under the License.
+  22:base64.c      ****  * 
+  23:base64.c      ****  * @APPLE_LICENSE_HEADER_END@
+  24:base64.c      ****  */
+  25:base64.c      **** /* ====================================================================
+  26:base64.c      ****  * Copyright (c) 1995-1999 The Apache Group.  All rights reserved.
+  27:base64.c      ****  *
+  28:base64.c      ****  * Redistribution and use in source and binary forms, with or without
+  29:base64.c      ****  * modification, are permitted provided that the following conditions
+  30:base64.c      ****  * are met:
+  31:base64.c      ****  *
+  32:base64.c      ****  * 1. Redistributions of source code must retain the above copyright
+  33:base64.c      ****  *    notice, this list of conditions and the following disclaimer.
+  34:base64.c      ****  *
+  35:base64.c      ****  * 2. Redistributions in binary form must reproduce the above copyright
+  36:base64.c      ****  *    notice, this list of conditions and the following disclaimer in
+  37:base64.c      ****  *    the documentation and/or other materials provided with the
+  38:base64.c      ****  *    distribution.
+  39:base64.c      ****  *
+  40:base64.c      ****  * 3. All advertising materials mentioning features or use of this
+  41:base64.c      ****  *    software must display the following acknowledgment:
+  42:base64.c      ****  *    "This product includes software developed by the Apache Group
+  43:base64.c      ****  *    for use in the Apache HTTP server project (http://www.apache.org/)."
+  44:base64.c      ****  *
+  45:base64.c      ****  * 4. The names "Apache Server" and "Apache Group" must not be used to
+  46:base64.c      ****  *    endorse or promote products derived from this software without
+  47:base64.c      ****  *    prior written permission. For written permission, please contact
+  48:base64.c      ****  *    apache@apache.org.
+  49:base64.c      ****  *
+  50:base64.c      ****  * 5. Products derived from this software may not be called "Apache"
+  51:base64.c      ****  *    nor may "Apache" appear in their names without prior written
+  52:base64.c      ****  *    permission of the Apache Group.
+  53:base64.c      ****  *
+  54:base64.c      ****  * 6. Redistributions of any form whatsoever must retain the following
+  55:base64.c      ****  *    acknowledgment:
+  56:base64.c      ****  *    "This product includes software developed by the Apache Group
+  57:base64.c      ****  *    for use in the Apache HTTP server project (http://www.apache.org/)."
+  58:base64.c      ****  *
+  59:base64.c      ****  * THIS SOFTWARE IS PROVIDED BY THE APACHE GROUP ``AS IS'' AND ANY
+  60:base64.c      ****  * EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  61:base64.c      ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+  62:base64.c      ****  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE APACHE GROUP OR
+  63:base64.c      ****  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  64:base64.c      ****  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  65:base64.c      ****  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  66:base64.c      ****  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  67:base64.c      ****  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  68:base64.c      ****  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  69:base64.c      ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+  70:base64.c      ****  * OF THE POSSIBILITY OF SUCH DAMAGE.
+  71:base64.c      ****  * ====================================================================
+  72:base64.c      ****  *
+  73:base64.c      ****  * This software consists of voluntary contributions made by many
+  74:base64.c      ****  * individuals on behalf of the Apache Group and was originally based
+  75:base64.c      ****  * on public domain software written at the National Center for
+  76:base64.c      ****  * Supercomputing Applications, University of Illinois, Urbana-Champaign.
+  77:base64.c      ****  * For more information on the Apache Group and the Apache HTTP server
+  78:base64.c      ****  * project, please see <http://www.apache.org/>.
+  79:base64.c      ****  *
+  80:base64.c      ****  */
+  81:base64.c      **** 
+  82:base64.c      **** /* Base64 encoder/decoder. Originally Apache file ap_base64.c
+  83:base64.c      ****  */
+  84:base64.c      **** 
+  85:base64.c      **** #include <string.h>
+  86:base64.c      **** 
+  87:base64.c      **** #include "base64.h"
+  88:base64.c      **** 
+  89:base64.c      **** /* aaaack but it's fast and const should make it shared text page. */
+  90:base64.c      **** static const unsigned char pr2six[256] =
+  91:base64.c      **** {
+  92:base64.c      ****     /* ASCII table */
+  93:base64.c      ****     64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+  94:base64.c      ****     64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+  95:base64.c      ****     64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 62, 64, 64,
+  96:base64.c      ****     52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 64, 64, 64, 64, 64,
+  97:base64.c      ****     64,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14,
+  98:base64.c      ****     15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 64, 64, 64, 64, 63,
+  99:base64.c      ****     64, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+ 100:base64.c      ****     41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 64, 64, 64, 64, 64,
+ 101:base64.c      ****     64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+ 102:base64.c      ****     64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+ 103:base64.c      ****     64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+ 104:base64.c      ****     64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+ 105:base64.c      ****     64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+ 106:base64.c      ****     64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+ 107:base64.c      ****     64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+ 108:base64.c      ****     64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64
+ 109:base64.c      **** };
+ 110:base64.c      **** 
+ 111:base64.c      **** unsigned int Base64decode_len(const char *bufcoded)
+ 112:base64.c      **** {
+ 288              		.loc 1 112 0
+ 289              		.cfi_startproc
+ 290              		@ args = 0, pretend = 0, frame = 16
+ 291              		@ frame_needed = 1, uses_anonymous_args = 0
+ 292              		@ link register save eliminated.
+ 293 0000 90B4     		push	{r4, r7}
+ 294              	.LCFI0:
+ 295              		.cfi_def_cfa_offset 8
+ 296              		.cfi_offset 4, -8
+ 297              		.cfi_offset 7, -4
+ 298 0002 84B0     		sub	sp, sp, #16
+ 299              	.LCFI1:
+ 300              		.cfi_def_cfa_offset 24
+ 301 0004 00AF     		add	r7, sp, #0
+ 302              	.LCFI2:
+ 303              		.cfi_def_cfa_register 7
+ 304 0006 7860     		str	r0, [r7, #4]
+ 113:base64.c      ****     unsigned int nbytesdecoded;
+ 114:base64.c      ****     register const unsigned char *bufin;
+ 115:base64.c      ****     register unsigned int nprbytes;
+ 116:base64.c      **** 
+ 117:base64.c      ****     bufin = (const unsigned char *) bufcoded;
+ 305              		.loc 1 117 0
+ 306 0008 7C68     		ldr	r4, [r7, #4]
+ 118:base64.c      ****     while (pr2six[*(bufin++)] <= 63);
+ 307              		.loc 1 118 0
+ 308 000a 00BF     		nop
+ 309              	.L2:
+ 310              		.loc 1 118 0 is_stmt 0 discriminator 1
+ 311 000c 2346     		mov	r3, r4
+ 312 000e 5C1C     		adds	r4, r3, #1
+ 313 0010 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 314 0012 1A46     		mov	r2, r3
+ 315 0014 0A4B     		ldr	r3, .L4
+ 316 0016 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 317 0018 3F2B     		cmp	r3, #63
+ 318 001a F7D9     		bls	.L2
+ 119:base64.c      **** 
+ 120:base64.c      ****     nprbytes = (bufin - (const unsigned char *) bufcoded) - 1;
+ 319              		.loc 1 120 0 is_stmt 1
+ 320 001c 2246     		mov	r2, r4
+ 321 001e 7B68     		ldr	r3, [r7, #4]
+ 322 0020 D31A     		subs	r3, r2, r3
+ 323 0022 013B     		subs	r3, r3, #1
+ 324 0024 1C46     		mov	r4, r3
+ 121:base64.c      ****     nbytesdecoded = ((nprbytes + 3) / 4) * 3;
+ 325              		.loc 1 121 0
+ 326 0026 E31C     		adds	r3, r4, #3
+ 327 0028 9A08     		lsrs	r2, r3, #2
+ 328 002a 1346     		mov	r3, r2
+ 329 002c 5B00     		lsls	r3, r3, #1
+ 330 002e 1344     		add	r3, r3, r2
+ 331 0030 FB60     		str	r3, [r7, #12]
+ 122:base64.c      **** 
+ 123:base64.c      ****     return nbytesdecoded + 1;
+ 332              		.loc 1 123 0
+ 333 0032 FB68     		ldr	r3, [r7, #12]
+ 334 0034 0133     		adds	r3, r3, #1
+ 124:base64.c      **** }
+ 335              		.loc 1 124 0
+ 336 0036 1846     		mov	r0, r3
+ 337 0038 1037     		adds	r7, r7, #16
+ 338              	.LCFI3:
+ 339              		.cfi_def_cfa_offset 8
+ 340 003a BD46     		mov	sp, r7
+ 341              	.LCFI4:
+ 342              		.cfi_def_cfa_register 13
+ 343              		@ sp needed
+ 344 003c 90BC     		pop	{r4, r7}
+ 345              	.LCFI5:
+ 346              		.cfi_restore 7
+ 347              		.cfi_restore 4
+ 348              		.cfi_def_cfa_offset 0
+ 349 003e 7047     		bx	lr
+ 350              	.L5:
+ 351              		.align	2
+ 352              	.L4:
+ 353 0040 00000000 		.word	pr2six
+ 354              		.cfi_endproc
+ 355              	.LFE0:
+ 357              		.section	.text.Base64decode,"ax",%progbits
+ 358              		.align	1
+ 359              		.global	Base64decode
+ 360              		.syntax unified
+ 361              		.thumb
+ 362              		.thumb_func
+ 363              		.fpu fpv4-sp-d16
+ 365              	Base64decode:
+ 366              	.LFB1:
+ 125:base64.c      **** 
+ 126:base64.c      **** unsigned int Base64decode(char *bufplain, const char *bufcoded)
+ 127:base64.c      **** {
+ 367              		.loc 1 127 0
+ 368              		.cfi_startproc
+ 369              		@ args = 0, pretend = 0, frame = 16
+ 370              		@ frame_needed = 1, uses_anonymous_args = 0
+ 371              		@ link register save eliminated.
+ 372 0000 F0B4     		push	{r4, r5, r6, r7}
+ 373              	.LCFI6:
+ 374              		.cfi_def_cfa_offset 16
+ 375              		.cfi_offset 4, -16
+ 376              		.cfi_offset 5, -12
+ 377              		.cfi_offset 6, -8
+ 378              		.cfi_offset 7, -4
+ 379 0002 84B0     		sub	sp, sp, #16
+ 380              	.LCFI7:
+ 381              		.cfi_def_cfa_offset 32
+ 382 0004 00AF     		add	r7, sp, #0
+ 383              	.LCFI8:
+ 384              		.cfi_def_cfa_register 7
+ 385 0006 7860     		str	r0, [r7, #4]
+ 386 0008 3960     		str	r1, [r7]
+ 128:base64.c      ****     unsigned int nbytesdecoded;
+ 129:base64.c      ****     register const unsigned char *bufin;
+ 130:base64.c      ****     register unsigned char *bufout;
+ 131:base64.c      ****     register unsigned int nprbytes;
+ 132:base64.c      **** 
+ 133:base64.c      ****     bufin = (const unsigned char *) bufcoded;
+ 387              		.loc 1 133 0
+ 388 000a 3C68     		ldr	r4, [r7]
+ 134:base64.c      ****     while (pr2six[*(bufin++)] <= 63);
+ 389              		.loc 1 134 0
+ 390 000c 00BF     		nop
+ 391              	.L7:
+ 392              		.loc 1 134 0 is_stmt 0 discriminator 1
+ 393 000e 2346     		mov	r3, r4
+ 394 0010 5C1C     		adds	r4, r3, #1
+ 395 0012 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 396 0014 1A46     		mov	r2, r3
+ 397 0016 524B     		ldr	r3, .L14
+ 398 0018 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 399 001a 3F2B     		cmp	r3, #63
+ 400 001c F7D9     		bls	.L7
+ 135:base64.c      ****     nprbytes = (bufin - (const unsigned char *) bufcoded) - 1;
+ 401              		.loc 1 135 0 is_stmt 1
+ 402 001e 2246     		mov	r2, r4
+ 403 0020 3B68     		ldr	r3, [r7]
+ 404 0022 D31A     		subs	r3, r2, r3
+ 405 0024 013B     		subs	r3, r3, #1
+ 406 0026 1E46     		mov	r6, r3
+ 136:base64.c      ****     nbytesdecoded = ((nprbytes + 3) / 4) * 3;
+ 407              		.loc 1 136 0
+ 408 0028 F31C     		adds	r3, r6, #3
+ 409 002a 9A08     		lsrs	r2, r3, #2
+ 410 002c 1346     		mov	r3, r2
+ 411 002e 5B00     		lsls	r3, r3, #1
+ 412 0030 1344     		add	r3, r3, r2
+ 413 0032 FB60     		str	r3, [r7, #12]
+ 137:base64.c      **** 
+ 138:base64.c      ****     bufout = (unsigned char *) bufplain;
+ 414              		.loc 1 138 0
+ 415 0034 7D68     		ldr	r5, [r7, #4]
+ 139:base64.c      ****     bufin = (const unsigned char *) bufcoded;
+ 416              		.loc 1 139 0
+ 417 0036 3C68     		ldr	r4, [r7]
+ 140:base64.c      **** 
+ 141:base64.c      ****     while (nprbytes > 4) {
+ 418              		.loc 1 141 0
+ 419 0038 3DE0     		b	.L8
+ 420              	.L9:
+ 142:base64.c      ****     *(bufout++) =
+ 143:base64.c      ****         (unsigned char) (pr2six[*bufin] << 2 | pr2six[bufin[1]] >> 4);
+ 421              		.loc 1 143 0
+ 422 003a 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 423 003c 1A46     		mov	r2, r3
+ 424 003e 484B     		ldr	r3, .L14
+ 425 0040 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 426 0042 9B00     		lsls	r3, r3, #2
+ 427 0044 5AB2     		sxtb	r2, r3
+ 428 0046 631C     		adds	r3, r4, #1
+ 429 0048 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 430 004a 1946     		mov	r1, r3
+ 431 004c 444B     		ldr	r3, .L14
+ 432 004e 5B5C     		ldrb	r3, [r3, r1]	@ zero_extendqisi2
+ 433 0050 1B09     		lsrs	r3, r3, #4
+ 434 0052 DBB2     		uxtb	r3, r3
+ 435 0054 5BB2     		sxtb	r3, r3
+ 436 0056 1343     		orrs	r3, r3, r2
+ 437 0058 5AB2     		sxtb	r2, r3
+ 142:base64.c      ****     *(bufout++) =
+ 438              		.loc 1 142 0
+ 439 005a 2B46     		mov	r3, r5
+ 440 005c 5D1C     		adds	r5, r3, #1
+ 441              		.loc 1 143 0
+ 442 005e D2B2     		uxtb	r2, r2
+ 142:base64.c      ****     *(bufout++) =
+ 443              		.loc 1 142 0
+ 444 0060 1A70     		strb	r2, [r3]
+ 144:base64.c      ****     *(bufout++) =
+ 145:base64.c      ****         (unsigned char) (pr2six[bufin[1]] << 4 | pr2six[bufin[2]] >> 2);
+ 445              		.loc 1 145 0
+ 446 0062 631C     		adds	r3, r4, #1
+ 447 0064 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 448 0066 1A46     		mov	r2, r3
+ 449 0068 3D4B     		ldr	r3, .L14
+ 450 006a 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 451 006c 1B01     		lsls	r3, r3, #4
+ 452 006e 5AB2     		sxtb	r2, r3
+ 453 0070 A31C     		adds	r3, r4, #2
+ 454 0072 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 455 0074 1946     		mov	r1, r3
+ 456 0076 3A4B     		ldr	r3, .L14
+ 457 0078 5B5C     		ldrb	r3, [r3, r1]	@ zero_extendqisi2
+ 458 007a 9B08     		lsrs	r3, r3, #2
+ 459 007c DBB2     		uxtb	r3, r3
+ 460 007e 5BB2     		sxtb	r3, r3
+ 461 0080 1343     		orrs	r3, r3, r2
+ 462 0082 5AB2     		sxtb	r2, r3
+ 144:base64.c      ****     *(bufout++) =
+ 463              		.loc 1 144 0
+ 464 0084 2B46     		mov	r3, r5
+ 465 0086 5D1C     		adds	r5, r3, #1
+ 466              		.loc 1 145 0
+ 467 0088 D2B2     		uxtb	r2, r2
+ 144:base64.c      ****     *(bufout++) =
+ 468              		.loc 1 144 0
+ 469 008a 1A70     		strb	r2, [r3]
+ 146:base64.c      ****     *(bufout++) =
+ 147:base64.c      ****         (unsigned char) (pr2six[bufin[2]] << 6 | pr2six[bufin[3]]);
+ 470              		.loc 1 147 0
+ 471 008c A31C     		adds	r3, r4, #2
+ 472 008e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 473 0090 1A46     		mov	r2, r3
+ 474 0092 334B     		ldr	r3, .L14
+ 475 0094 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 476 0096 9B01     		lsls	r3, r3, #6
+ 477 0098 5AB2     		sxtb	r2, r3
+ 478 009a E31C     		adds	r3, r4, #3
+ 479 009c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 480 009e 1946     		mov	r1, r3
+ 481 00a0 2F4B     		ldr	r3, .L14
+ 482 00a2 5B5C     		ldrb	r3, [r3, r1]	@ zero_extendqisi2
+ 483 00a4 5BB2     		sxtb	r3, r3
+ 484 00a6 1343     		orrs	r3, r3, r2
+ 485 00a8 5AB2     		sxtb	r2, r3
+ 146:base64.c      ****     *(bufout++) =
+ 486              		.loc 1 146 0
+ 487 00aa 2B46     		mov	r3, r5
+ 488 00ac 5D1C     		adds	r5, r3, #1
+ 489              		.loc 1 147 0
+ 490 00ae D2B2     		uxtb	r2, r2
+ 146:base64.c      ****     *(bufout++) =
+ 491              		.loc 1 146 0
+ 492 00b0 1A70     		strb	r2, [r3]
+ 148:base64.c      ****     bufin += 4;
+ 493              		.loc 1 148 0
+ 494 00b2 0434     		adds	r4, r4, #4
+ 149:base64.c      ****     nprbytes -= 4;
+ 495              		.loc 1 149 0
+ 496 00b4 043E     		subs	r6, r6, #4
+ 497              	.L8:
+ 141:base64.c      ****     *(bufout++) =
+ 498              		.loc 1 141 0
+ 499 00b6 042E     		cmp	r6, #4
+ 500 00b8 BFD8     		bhi	.L9
+ 150:base64.c      ****     }
+ 151:base64.c      **** 
+ 152:base64.c      ****     /* Note: (nprbytes == 1) would be an error, so just ingore that case */
+ 153:base64.c      ****     if (nprbytes > 1) {
+ 501              		.loc 1 153 0
+ 502 00ba 012E     		cmp	r6, #1
+ 503 00bc 13D9     		bls	.L10
+ 154:base64.c      ****     *(bufout++) =
+ 155:base64.c      ****         (unsigned char) (pr2six[*bufin] << 2 | pr2six[bufin[1]] >> 4);
+ 504              		.loc 1 155 0
+ 505 00be 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 506 00c0 1A46     		mov	r2, r3
+ 507 00c2 274B     		ldr	r3, .L14
+ 508 00c4 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 509 00c6 9B00     		lsls	r3, r3, #2
+ 510 00c8 5AB2     		sxtb	r2, r3
+ 511 00ca 631C     		adds	r3, r4, #1
+ 512 00cc 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 513 00ce 1946     		mov	r1, r3
+ 514 00d0 234B     		ldr	r3, .L14
+ 515 00d2 5B5C     		ldrb	r3, [r3, r1]	@ zero_extendqisi2
+ 516 00d4 1B09     		lsrs	r3, r3, #4
+ 517 00d6 DBB2     		uxtb	r3, r3
+ 518 00d8 5BB2     		sxtb	r3, r3
+ 519 00da 1343     		orrs	r3, r3, r2
+ 520 00dc 5AB2     		sxtb	r2, r3
+ 154:base64.c      ****     *(bufout++) =
+ 521              		.loc 1 154 0
+ 522 00de 2B46     		mov	r3, r5
+ 523 00e0 5D1C     		adds	r5, r3, #1
+ 524              		.loc 1 155 0
+ 525 00e2 D2B2     		uxtb	r2, r2
+ 154:base64.c      ****     *(bufout++) =
+ 526              		.loc 1 154 0
+ 527 00e4 1A70     		strb	r2, [r3]
+ 528              	.L10:
+ 156:base64.c      ****     }
+ 157:base64.c      ****     if (nprbytes > 2) {
+ 529              		.loc 1 157 0
+ 530 00e6 022E     		cmp	r6, #2
+ 531 00e8 14D9     		bls	.L11
+ 158:base64.c      ****     *(bufout++) =
+ 159:base64.c      ****         (unsigned char) (pr2six[bufin[1]] << 4 | pr2six[bufin[2]] >> 2);
+ 532              		.loc 1 159 0
+ 533 00ea 631C     		adds	r3, r4, #1
+ 534 00ec 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 535 00ee 1A46     		mov	r2, r3
+ 536 00f0 1B4B     		ldr	r3, .L14
+ 537 00f2 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 538 00f4 1B01     		lsls	r3, r3, #4
+ 539 00f6 5AB2     		sxtb	r2, r3
+ 540 00f8 A31C     		adds	r3, r4, #2
+ 541 00fa 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 542 00fc 1946     		mov	r1, r3
+ 543 00fe 184B     		ldr	r3, .L14
+ 544 0100 5B5C     		ldrb	r3, [r3, r1]	@ zero_extendqisi2
+ 545 0102 9B08     		lsrs	r3, r3, #2
+ 546 0104 DBB2     		uxtb	r3, r3
+ 547 0106 5BB2     		sxtb	r3, r3
+ 548 0108 1343     		orrs	r3, r3, r2
+ 549 010a 5AB2     		sxtb	r2, r3
+ 158:base64.c      ****     *(bufout++) =
+ 550              		.loc 1 158 0
+ 551 010c 2B46     		mov	r3, r5
+ 552 010e 5D1C     		adds	r5, r3, #1
+ 553              		.loc 1 159 0
+ 554 0110 D2B2     		uxtb	r2, r2
+ 158:base64.c      ****     *(bufout++) =
+ 555              		.loc 1 158 0
+ 556 0112 1A70     		strb	r2, [r3]
+ 557              	.L11:
+ 160:base64.c      ****     }
+ 161:base64.c      ****     if (nprbytes > 3) {
+ 558              		.loc 1 161 0
+ 559 0114 032E     		cmp	r6, #3
+ 560 0116 12D9     		bls	.L12
+ 162:base64.c      ****     *(bufout++) =
+ 163:base64.c      ****         (unsigned char) (pr2six[bufin[2]] << 6 | pr2six[bufin[3]]);
+ 561              		.loc 1 163 0
+ 562 0118 A31C     		adds	r3, r4, #2
+ 563 011a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 564 011c 1A46     		mov	r2, r3
+ 565 011e 104B     		ldr	r3, .L14
+ 566 0120 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 567 0122 9B01     		lsls	r3, r3, #6
+ 568 0124 5AB2     		sxtb	r2, r3
+ 569 0126 E31C     		adds	r3, r4, #3
+ 570 0128 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 571 012a 1946     		mov	r1, r3
+ 572 012c 0C4B     		ldr	r3, .L14
+ 573 012e 5B5C     		ldrb	r3, [r3, r1]	@ zero_extendqisi2
+ 574 0130 5BB2     		sxtb	r3, r3
+ 575 0132 1343     		orrs	r3, r3, r2
+ 576 0134 5AB2     		sxtb	r2, r3
+ 162:base64.c      ****     *(bufout++) =
+ 577              		.loc 1 162 0
+ 578 0136 2B46     		mov	r3, r5
+ 579 0138 5D1C     		adds	r5, r3, #1
+ 580              		.loc 1 163 0
+ 581 013a D2B2     		uxtb	r2, r2
+ 162:base64.c      ****     *(bufout++) =
+ 582              		.loc 1 162 0
+ 583 013c 1A70     		strb	r2, [r3]
+ 584              	.L12:
+ 164:base64.c      ****     }
+ 165:base64.c      **** 
+ 166:base64.c      ****     *(bufout++) = '\0';
+ 585              		.loc 1 166 0
+ 586 013e 2B46     		mov	r3, r5
+ 587 0140 5D1C     		adds	r5, r3, #1
+ 588 0142 0022     		movs	r2, #0
+ 589 0144 1A70     		strb	r2, [r3]
+ 167:base64.c      ****     nbytesdecoded -= (4 - nprbytes) & 3;
+ 590              		.loc 1 167 0
+ 591 0146 7342     		negs	r3, r6
+ 592 0148 03F00303 		and	r3, r3, #3
+ 593 014c FA68     		ldr	r2, [r7, #12]
+ 594 014e D31A     		subs	r3, r2, r3
+ 595 0150 FB60     		str	r3, [r7, #12]
+ 168:base64.c      ****     return nbytesdecoded;
+ 596              		.loc 1 168 0
+ 597 0152 FB68     		ldr	r3, [r7, #12]
+ 169:base64.c      **** }
+ 598              		.loc 1 169 0
+ 599 0154 1846     		mov	r0, r3
+ 600 0156 1037     		adds	r7, r7, #16
+ 601              	.LCFI9:
+ 602              		.cfi_def_cfa_offset 16
+ 603 0158 BD46     		mov	sp, r7
+ 604              	.LCFI10:
+ 605              		.cfi_def_cfa_register 13
+ 606              		@ sp needed
+ 607 015a F0BC     		pop	{r4, r5, r6, r7}
+ 608              	.LCFI11:
+ 609              		.cfi_restore 7
+ 610              		.cfi_restore 6
+ 611              		.cfi_restore 5
+ 612              		.cfi_restore 4
+ 613              		.cfi_def_cfa_offset 0
+ 614 015c 7047     		bx	lr
+ 615              	.L15:
+ 616 015e 00BF     		.align	2
+ 617              	.L14:
+ 618 0160 00000000 		.word	pr2six
+ 619              		.cfi_endproc
+ 620              	.LFE1:
+ 622              		.section	.rodata
+ 623              		.align	2
+ 626              	basis_64:
+ 627 0100 41424344 		.ascii	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy"
+ 627      45464748 
+ 627      494A4B4C 
+ 627      4D4E4F50 
+ 627      51525354 
+ 628 0133 7A303132 		.ascii	"z0123456789-_\000"
+ 628      33343536 
+ 628      3738392D 
+ 628      5F00
+ 629              		.section	.text.Base64encode_len,"ax",%progbits
+ 630              		.align	1
+ 631              		.global	Base64encode_len
+ 632              		.syntax unified
+ 633              		.thumb
+ 634              		.thumb_func
+ 635              		.fpu fpv4-sp-d16
+ 637              	Base64encode_len:
+ 638              	.LFB2:
+ 170:base64.c      **** 
+ 171:base64.c      **** static const char basis_64[] =
+ 172:base64.c      ****     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+ 173:base64.c      **** 
+ 174:base64.c      **** unsigned int Base64encode_len(unsigned int len)
+ 175:base64.c      **** {
+ 639              		.loc 1 175 0
+ 640              		.cfi_startproc
+ 641              		@ args = 0, pretend = 0, frame = 8
+ 642              		@ frame_needed = 1, uses_anonymous_args = 0
+ 643              		@ link register save eliminated.
+ 644 0000 80B4     		push	{r7}
+ 645              	.LCFI12:
+ 646              		.cfi_def_cfa_offset 4
+ 647              		.cfi_offset 7, -4
+ 648 0002 83B0     		sub	sp, sp, #12
+ 649              	.LCFI13:
+ 650              		.cfi_def_cfa_offset 16
+ 651 0004 00AF     		add	r7, sp, #0
+ 652              	.LCFI14:
+ 653              		.cfi_def_cfa_register 7
+ 654 0006 7860     		str	r0, [r7, #4]
+ 176:base64.c      ****     return ((len + 2) / 3 * 4) + 1;
+ 655              		.loc 1 176 0
+ 656 0008 7B68     		ldr	r3, [r7, #4]
+ 657 000a 0233     		adds	r3, r3, #2
+ 658 000c 054A     		ldr	r2, .L18
+ 659 000e A2FB0323 		umull	r2, r3, r2, r3
+ 660 0012 5B08     		lsrs	r3, r3, #1
+ 661 0014 9B00     		lsls	r3, r3, #2
+ 662 0016 0133     		adds	r3, r3, #1
+ 177:base64.c      **** }
+ 663              		.loc 1 177 0
+ 664 0018 1846     		mov	r0, r3
+ 665 001a 0C37     		adds	r7, r7, #12
+ 666              	.LCFI15:
+ 667              		.cfi_def_cfa_offset 4
+ 668 001c BD46     		mov	sp, r7
+ 669              	.LCFI16:
+ 670              		.cfi_def_cfa_register 13
+ 671              		@ sp needed
+ 672 001e 5DF8047B 		ldr	r7, [sp], #4
+ 673              	.LCFI17:
+ 674              		.cfi_restore 7
+ 675              		.cfi_def_cfa_offset 0
+ 676 0022 7047     		bx	lr
+ 677              	.L19:
+ 678              		.align	2
+ 679              	.L18:
+ 680 0024 ABAAAAAA 		.word	-1431655765
+ 681              		.cfi_endproc
+ 682              	.LFE2:
+ 684              		.section	.text.Base64encode,"ax",%progbits
+ 685              		.align	1
+ 686              		.global	Base64encode
+ 687              		.syntax unified
+ 688              		.thumb
+ 689              		.thumb_func
+ 690              		.fpu fpv4-sp-d16
+ 692              	Base64encode:
+ 693              	.LFB3:
+ 178:base64.c      **** 
+ 179:base64.c      **** unsigned int Base64encode(char *encoded, const char *string, unsigned int len)
+ 180:base64.c      **** {
+ 694              		.loc 1 180 0
+ 695              		.cfi_startproc
+ 696              		@ args = 0, pretend = 0, frame = 24
+ 697              		@ frame_needed = 1, uses_anonymous_args = 0
+ 698              		@ link register save eliminated.
+ 699 0000 80B4     		push	{r7}
+ 700              	.LCFI18:
+ 701              		.cfi_def_cfa_offset 4
+ 702              		.cfi_offset 7, -4
+ 703 0002 87B0     		sub	sp, sp, #28
+ 704              	.LCFI19:
+ 705              		.cfi_def_cfa_offset 32
+ 706 0004 00AF     		add	r7, sp, #0
+ 707              	.LCFI20:
+ 708              		.cfi_def_cfa_register 7
+ 709 0006 F860     		str	r0, [r7, #12]
+ 710 0008 B960     		str	r1, [r7, #8]
+ 711 000a 7A60     		str	r2, [r7, #4]
+ 181:base64.c      ****     unsigned int i;
+ 182:base64.c      ****     char *p;
+ 183:base64.c      **** 
+ 184:base64.c      ****     p = encoded;
+ 712              		.loc 1 184 0
+ 713 000c FB68     		ldr	r3, [r7, #12]
+ 714 000e 3B61     		str	r3, [r7, #16]
+ 185:base64.c      ****     for (i = 0; i < len - 2; i += 3) {
+ 715              		.loc 1 185 0
+ 716 0010 0023     		movs	r3, #0
+ 717 0012 7B61     		str	r3, [r7, #20]
+ 718 0014 48E0     		b	.L21
+ 719              	.L22:
+ 186:base64.c      ****     *p++ = basis_64[(string[i] >> 2) & 0x3F];
+ 720              		.loc 1 186 0 discriminator 3
+ 721 0016 BA68     		ldr	r2, [r7, #8]
+ 722 0018 7B69     		ldr	r3, [r7, #20]
+ 723 001a 1344     		add	r3, r3, r2
+ 724 001c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 725 001e 9B08     		lsrs	r3, r3, #2
+ 726 0020 DBB2     		uxtb	r3, r3
+ 727 0022 03F03F02 		and	r2, r3, #63
+ 728 0026 3B69     		ldr	r3, [r7, #16]
+ 729 0028 591C     		adds	r1, r3, #1
+ 730 002a 3961     		str	r1, [r7, #16]
+ 731 002c 4E49     		ldr	r1, .L27
+ 732 002e 8A5C     		ldrb	r2, [r1, r2]	@ zero_extendqisi2
+ 733 0030 1A70     		strb	r2, [r3]
+ 187:base64.c      ****     *p++ = basis_64[((string[i] & 0x3) << 4) |
+ 734              		.loc 1 187 0 discriminator 3
+ 735 0032 BA68     		ldr	r2, [r7, #8]
+ 736 0034 7B69     		ldr	r3, [r7, #20]
+ 737 0036 1344     		add	r3, r3, r2
+ 738 0038 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 739 003a 1B01     		lsls	r3, r3, #4
+ 740 003c 03F03003 		and	r3, r3, #48
+ 188:base64.c      ****                     ((unsigned int) (string[i + 1] & 0xF0) >> 4)];
+ 741              		.loc 1 188 0 discriminator 3
+ 742 0040 7A69     		ldr	r2, [r7, #20]
+ 743 0042 0132     		adds	r2, r2, #1
+ 744 0044 B968     		ldr	r1, [r7, #8]
+ 745 0046 0A44     		add	r2, r2, r1
+ 746 0048 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 747 004a 1209     		lsrs	r2, r2, #4
+ 748 004c D2B2     		uxtb	r2, r2
+ 187:base64.c      ****     *p++ = basis_64[((string[i] & 0x3) << 4) |
+ 749              		.loc 1 187 0 discriminator 3
+ 750 004e 1A43     		orrs	r2, r2, r3
+ 751 0050 3B69     		ldr	r3, [r7, #16]
+ 752 0052 591C     		adds	r1, r3, #1
+ 753 0054 3961     		str	r1, [r7, #16]
+ 754 0056 4449     		ldr	r1, .L27
+ 755 0058 8A5C     		ldrb	r2, [r1, r2]	@ zero_extendqisi2
+ 756 005a 1A70     		strb	r2, [r3]
+ 189:base64.c      ****     *p++ = basis_64[((string[i + 1] & 0xF) << 2) |
+ 757              		.loc 1 189 0 discriminator 3
+ 758 005c 7B69     		ldr	r3, [r7, #20]
+ 759 005e 0133     		adds	r3, r3, #1
+ 760 0060 BA68     		ldr	r2, [r7, #8]
+ 761 0062 1344     		add	r3, r3, r2
+ 762 0064 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 763 0066 9B00     		lsls	r3, r3, #2
+ 764 0068 03F03C03 		and	r3, r3, #60
+ 190:base64.c      ****                     ((unsigned int) (string[i + 2] & 0xC0) >> 6)];
+ 765              		.loc 1 190 0 discriminator 3
+ 766 006c 7A69     		ldr	r2, [r7, #20]
+ 767 006e 0232     		adds	r2, r2, #2
+ 768 0070 B968     		ldr	r1, [r7, #8]
+ 769 0072 0A44     		add	r2, r2, r1
+ 770 0074 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 771 0076 9209     		lsrs	r2, r2, #6
+ 772 0078 D2B2     		uxtb	r2, r2
+ 189:base64.c      ****     *p++ = basis_64[((string[i + 1] & 0xF) << 2) |
+ 773              		.loc 1 189 0 discriminator 3
+ 774 007a 1A43     		orrs	r2, r2, r3
+ 775 007c 3B69     		ldr	r3, [r7, #16]
+ 776 007e 591C     		adds	r1, r3, #1
+ 777 0080 3961     		str	r1, [r7, #16]
+ 778 0082 3949     		ldr	r1, .L27
+ 779 0084 8A5C     		ldrb	r2, [r1, r2]	@ zero_extendqisi2
+ 780 0086 1A70     		strb	r2, [r3]
+ 191:base64.c      ****     *p++ = basis_64[string[i + 2] & 0x3F];
+ 781              		.loc 1 191 0 discriminator 3
+ 782 0088 7B69     		ldr	r3, [r7, #20]
+ 783 008a 0233     		adds	r3, r3, #2
+ 784 008c BA68     		ldr	r2, [r7, #8]
+ 785 008e 1344     		add	r3, r3, r2
+ 786 0090 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 787 0092 03F03F02 		and	r2, r3, #63
+ 788 0096 3B69     		ldr	r3, [r7, #16]
+ 789 0098 591C     		adds	r1, r3, #1
+ 790 009a 3961     		str	r1, [r7, #16]
+ 791 009c 3249     		ldr	r1, .L27
+ 792 009e 8A5C     		ldrb	r2, [r1, r2]	@ zero_extendqisi2
+ 793 00a0 1A70     		strb	r2, [r3]
+ 185:base64.c      ****     *p++ = basis_64[(string[i] >> 2) & 0x3F];
+ 794              		.loc 1 185 0 discriminator 3
+ 795 00a2 7B69     		ldr	r3, [r7, #20]
+ 796 00a4 0333     		adds	r3, r3, #3
+ 797 00a6 7B61     		str	r3, [r7, #20]
+ 798              	.L21:
+ 185:base64.c      ****     *p++ = basis_64[(string[i] >> 2) & 0x3F];
+ 799              		.loc 1 185 0 is_stmt 0 discriminator 1
+ 800 00a8 7B68     		ldr	r3, [r7, #4]
+ 801 00aa 023B     		subs	r3, r3, #2
+ 802 00ac 7A69     		ldr	r2, [r7, #20]
+ 803 00ae 9A42     		cmp	r2, r3
+ 804 00b0 B1D3     		bcc	.L22
+ 192:base64.c      ****     }
+ 193:base64.c      ****     if (i < len) {
+ 805              		.loc 1 193 0 is_stmt 1
+ 806 00b2 7A69     		ldr	r2, [r7, #20]
+ 807 00b4 7B68     		ldr	r3, [r7, #4]
+ 808 00b6 9A42     		cmp	r2, r3
+ 809 00b8 4DD2     		bcs	.L23
+ 194:base64.c      ****     *p++ = basis_64[(string[i] >> 2) & 0x3F];
+ 810              		.loc 1 194 0
+ 811 00ba BA68     		ldr	r2, [r7, #8]
+ 812 00bc 7B69     		ldr	r3, [r7, #20]
+ 813 00be 1344     		add	r3, r3, r2
+ 814 00c0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 815 00c2 9B08     		lsrs	r3, r3, #2
+ 816 00c4 DBB2     		uxtb	r3, r3
+ 817 00c6 03F03F02 		and	r2, r3, #63
+ 818 00ca 3B69     		ldr	r3, [r7, #16]
+ 819 00cc 591C     		adds	r1, r3, #1
+ 820 00ce 3961     		str	r1, [r7, #16]
+ 821 00d0 2549     		ldr	r1, .L27
+ 822 00d2 8A5C     		ldrb	r2, [r1, r2]	@ zero_extendqisi2
+ 823 00d4 1A70     		strb	r2, [r3]
+ 195:base64.c      ****     if (i == (len - 1)) {
+ 824              		.loc 1 195 0
+ 825 00d6 7B68     		ldr	r3, [r7, #4]
+ 826 00d8 013B     		subs	r3, r3, #1
+ 827 00da 7A69     		ldr	r2, [r7, #20]
+ 828 00dc 9A42     		cmp	r2, r3
+ 829 00de 12D1     		bne	.L24
+ 196:base64.c      ****         *p++ = basis_64[((string[i] & 0x3) << 4)];
+ 830              		.loc 1 196 0
+ 831 00e0 BA68     		ldr	r2, [r7, #8]
+ 832 00e2 7B69     		ldr	r3, [r7, #20]
+ 833 00e4 1344     		add	r3, r3, r2
+ 834 00e6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 835 00e8 1B01     		lsls	r3, r3, #4
+ 836 00ea 03F03002 		and	r2, r3, #48
+ 837 00ee 3B69     		ldr	r3, [r7, #16]
+ 838 00f0 591C     		adds	r1, r3, #1
+ 839 00f2 3961     		str	r1, [r7, #16]
+ 840 00f4 1C49     		ldr	r1, .L27
+ 841 00f6 8A5C     		ldrb	r2, [r1, r2]	@ zero_extendqisi2
+ 842 00f8 1A70     		strb	r2, [r3]
+ 197:base64.c      ****         *p++ = '=';
+ 843              		.loc 1 197 0
+ 844 00fa 3B69     		ldr	r3, [r7, #16]
+ 845 00fc 5A1C     		adds	r2, r3, #1
+ 846 00fe 3A61     		str	r2, [r7, #16]
+ 847 0100 3D22     		movs	r2, #61
+ 848 0102 1A70     		strb	r2, [r3]
+ 849 0104 22E0     		b	.L25
+ 850              	.L24:
+ 198:base64.c      ****     }
+ 199:base64.c      ****     else {
+ 200:base64.c      ****         *p++ = basis_64[((string[i] & 0x3) << 4) |
+ 851              		.loc 1 200 0
+ 852 0106 BA68     		ldr	r2, [r7, #8]
+ 853 0108 7B69     		ldr	r3, [r7, #20]
+ 854 010a 1344     		add	r3, r3, r2
+ 855 010c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 856 010e 1B01     		lsls	r3, r3, #4
+ 857 0110 03F03003 		and	r3, r3, #48
+ 201:base64.c      ****                         ((unsigned int) (string[i + 1] & 0xF0) >> 4)];
+ 858              		.loc 1 201 0
+ 859 0114 7A69     		ldr	r2, [r7, #20]
+ 860 0116 0132     		adds	r2, r2, #1
+ 861 0118 B968     		ldr	r1, [r7, #8]
+ 862 011a 0A44     		add	r2, r2, r1
+ 863 011c 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 864 011e 1209     		lsrs	r2, r2, #4
+ 865 0120 D2B2     		uxtb	r2, r2
+ 200:base64.c      ****                         ((unsigned int) (string[i + 1] & 0xF0) >> 4)];
+ 866              		.loc 1 200 0
+ 867 0122 1A43     		orrs	r2, r2, r3
+ 868 0124 3B69     		ldr	r3, [r7, #16]
+ 869 0126 591C     		adds	r1, r3, #1
+ 870 0128 3961     		str	r1, [r7, #16]
+ 871 012a 0F49     		ldr	r1, .L27
+ 872 012c 8A5C     		ldrb	r2, [r1, r2]	@ zero_extendqisi2
+ 873 012e 1A70     		strb	r2, [r3]
+ 202:base64.c      ****         *p++ = basis_64[((string[i + 1] & 0xF) << 2)];
+ 874              		.loc 1 202 0
+ 875 0130 7B69     		ldr	r3, [r7, #20]
+ 876 0132 0133     		adds	r3, r3, #1
+ 877 0134 BA68     		ldr	r2, [r7, #8]
+ 878 0136 1344     		add	r3, r3, r2
+ 879 0138 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 880 013a 9B00     		lsls	r3, r3, #2
+ 881 013c 03F03C02 		and	r2, r3, #60
+ 882 0140 3B69     		ldr	r3, [r7, #16]
+ 883 0142 591C     		adds	r1, r3, #1
+ 884 0144 3961     		str	r1, [r7, #16]
+ 885 0146 0849     		ldr	r1, .L27
+ 886 0148 8A5C     		ldrb	r2, [r1, r2]	@ zero_extendqisi2
+ 887 014a 1A70     		strb	r2, [r3]
+ 888              	.L25:
+ 203:base64.c      ****     }
+ 204:base64.c      ****     *p++ = '=';
+ 889              		.loc 1 204 0
+ 890 014c 3B69     		ldr	r3, [r7, #16]
+ 891 014e 5A1C     		adds	r2, r3, #1
+ 892 0150 3A61     		str	r2, [r7, #16]
+ 893 0152 3D22     		movs	r2, #61
+ 894 0154 1A70     		strb	r2, [r3]
+ 895              	.L23:
+ 205:base64.c      ****     }
+ 206:base64.c      **** 
+ 207:base64.c      ****     //*p++ = '\0';
+ 208:base64.c      ****     return p - encoded;
+ 896              		.loc 1 208 0
+ 897 0156 3A69     		ldr	r2, [r7, #16]
+ 898 0158 FB68     		ldr	r3, [r7, #12]
+ 899 015a D31A     		subs	r3, r2, r3
+ 209:base64.c      **** }
+ 900              		.loc 1 209 0
+ 901 015c 1846     		mov	r0, r3
+ 902 015e 1C37     		adds	r7, r7, #28
+ 903              	.LCFI21:
+ 904              		.cfi_def_cfa_offset 4
+ 905 0160 BD46     		mov	sp, r7
+ 906              	.LCFI22:
+ 907              		.cfi_def_cfa_register 13
+ 908              		@ sp needed
+ 909 0162 5DF8047B 		ldr	r7, [sp], #4
+ 910              	.LCFI23:
+ 911              		.cfi_restore 7
+ 912              		.cfi_def_cfa_offset 0
+ 913 0166 7047     		bx	lr
+ 914              	.L28:
+ 915              		.align	2
+ 916              	.L27:
+ 917 0168 00010000 		.word	basis_64
+ 918              		.cfi_endproc
+ 919              	.LFE3:
+ 921              		.text
+ 922              	.Letext0:
+ 923              		.file 2 "/usr/arm-none-eabi/include/sys/lock.h"
+ 924              		.file 3 "/usr/arm-none-eabi/include/sys/_types.h"
+ 925              		.file 4 "/usr/lib/gcc/arm-none-eabi/7.2.1/include/stddef.h"
+ 926              		.file 5 "/usr/arm-none-eabi/include/sys/reent.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 base64.c
+     /tmp/cc2P560A.s:17     .rodata:0000000000000000 $d
+     /tmp/cc2P560A.s:20     .rodata:0000000000000000 pr2six
+     /tmp/cc2P560A.s:278    .text.Base64decode_len:0000000000000000 $t
+     /tmp/cc2P560A.s:285    .text.Base64decode_len:0000000000000000 Base64decode_len
+     /tmp/cc2P560A.s:353    .text.Base64decode_len:0000000000000040 $d
+     /tmp/cc2P560A.s:358    .text.Base64decode:0000000000000000 $t
+     /tmp/cc2P560A.s:365    .text.Base64decode:0000000000000000 Base64decode
+     /tmp/cc2P560A.s:618    .text.Base64decode:0000000000000160 $d
+     /tmp/cc2P560A.s:626    .rodata:0000000000000100 basis_64
+     /tmp/cc2P560A.s:630    .text.Base64encode_len:0000000000000000 $t
+     /tmp/cc2P560A.s:637    .text.Base64encode_len:0000000000000000 Base64encode_len
+     /tmp/cc2P560A.s:680    .text.Base64encode_len:0000000000000024 $d
+     /tmp/cc2P560A.s:685    .text.Base64encode:0000000000000000 $t
+     /tmp/cc2P560A.s:692    .text.Base64encode:0000000000000000 Base64encode
+     /tmp/cc2P560A.s:917    .text.Base64encode:0000000000000168 $d
+                           .group:0000000000000000 wm4.0.c52906f746dd90abef2694639d8411ad
+                           .group:0000000000000000 wm4._newlib_version.h.4.3572908597b70d672d181fc7fc501c19
+                           .group:0000000000000000 wm4.newlib.h.21.64e14ed41172bf448383d50cbb14725e
+                           .group:0000000000000000 wm4.ieeefp.h.77.49bcce8a603f3d93a95080d6a3573782
+                           .group:0000000000000000 wm4.features.h.22.692cd1f2e947ca7b8fea300222f5f1f2
+                           .group:0000000000000000 wm4.config.h.220.6cac6a9685cfce5e83c17784171638d9
+                           .group:0000000000000000 wm4._ansi.h.23.9f8fcfa20193763fcf364fb91705c94b
+                           .group:0000000000000000 wm4.stddef.h.39.99b5021e28f91cdb161c889e07266673
+                           .group:0000000000000000 wm4._default_types.h.6.959254cf5f09734ea7516c89e8bb21bd
+                           .group:0000000000000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
+                           .group:0000000000000000 wm4._types.h.125.5cf8a495f1f7ef36777ad868a1e32068
+                           .group:0000000000000000 wm4.stddef.h.161.5349cb105733e8777bfb0cf53c4e3f34
+                           .group:0000000000000000 wm4._types.h.184.7120b8bb2e0149e2359704f4e2251b68
+                           .group:0000000000000000 wm4.reent.h.17.87376802c2b370b32a762f0a30482d9e
+                           .group:0000000000000000 wm4.cdefs.h.47.b99d69adf76e00132150c6ca209cbd8f
+                           .group:0000000000000000 wm4.string.h.15.dab3980bf35408a4c507182805e2de3a
+                           .group:0000000000000000 wm4.stddef.h.161.19e15733342b50ead2919490b095303e
+
+NO UNDEFINED SYMBOLS
